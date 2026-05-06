@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sola — Financial Model</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green:#1A6B5A;--green-l:#E0F2EE;--sun:#F5A623;--sun-l:#FFF3DC;
+  --red:#C0392B;--red-l:#FDECEA;--slate:#1C2B2A;--muted:#6B7B7A;
+  --border:#E2E8E7;--bg:#F4F7F6;--white:#fff;--card:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--slate);font-size:14px}
+header{background:var(--slate);padding:24px 40px;display:flex;align-items:center;justify-content:space-between}
+header h1{font-family:'DM Serif Display',serif;font-size:24px;color:white}
+header span{font-size:12px;color:rgba(255,255,255,0.45);background:rgba(255,255,255,0.08);padding:4px 12px;border-radius:100px}
+.layout{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 72px)}
+.sidebar{background:var(--white);border-right:1px solid var(--border);padding:28px 24px;overflow-y:auto}
+.sidebar h2{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;margin-top:24px}
+.sidebar h2:first-child{margin-top:0}
+.input-row{margin-bottom:14px}
+.input-row label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px}
+.input-row input[type=range]{width:100%;accent-color:var(--green);margin-bottom:4px}
+.val-display{font-size:14px;font-weight:500;font-family:'DM Mono',monospace;color:var(--slate)}
+.input-row select{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg);color:var(--slate)}
+.tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:100px;font-weight:500;margin-left:6px}
+.tag-green{background:var(--green-l);color:var(--green)}
+.tag-red{background:var(--red-l);color:var(--red)}
+.tag-sun{background:var(--sun-l);color:#7A5200}
+.main{padding:32px 36px;overflow-y:auto}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.kpi{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px 20px}
+.kpi-label{font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:6px}
+.kpi-value{font-size:26px;font-weight:500;font-family:'DM Mono',monospace}
+.kpi-value.pos{color:var(--green)}
+.kpi-value.neg{color:var(--red)}
+.kpi-value.neu{color:var(--slate)}
+.kpi-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.section{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:20px}
+.section h3{font-size:14px;font-weight:500;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:7px 10px;font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
+td{padding:8px 10px;font-size:13px;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+.td-r{text-align:right;font-family:'DM Mono',monospace}
+.td-pos{color:var(--green);font-weight:500}
+.td-neg{color:var(--red)}
+.td-bold{font-weight:500}
+.bar-wrap{height:8px;background:var(--border);border-radius:100px;overflow:hidden;margin-top:6px}
+.bar{height:100%;border-radius:100px;transition:width 0.4s}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.mini-chart{position:relative;height:160px;display:flex;align-items:flex-end;gap:6px;padding:0 4px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar-col-fill{width:100%;border-radius:4px 4px 0 0;transition:height 0.4s;min-height:2px}
+.bar-col-label{font-size:10px;color:var(--muted);white-space:nowrap}
+.chart-y{position:absolute;left:0;top:0;bottom:20px;display:flex;flex-direction:column;justify-content:space-between}
+.chart-y span{font-size:10px;color:var(--muted)}
+.mix-wrap{display:flex;height:20px;border-radius:100px;overflow:hidden;margin:12px 0 8px}
+.mix-seg{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;transition:flex 0.4s}
+.assumption-note{font-size:11px;color:var(--muted);line-height:1.6;padding-top:12px;border-top:1px solid var(--border);margin-top:12px}
+.scenario-row{display:flex;gap:10px;margin-bottom:20px}
+.scenario-btn{flex:1;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);cursor:pointer;font-size:12px;font-weight:500;transition:all 0.2s;text-align:center}
+.scenario-btn:hover,.scenario-btn.active{background:var(--slate);color:white;border-color:var(--slate)}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Sola — Financial Model</h1>
+  <span>Interactive · adjust assumptions in the sidebar</span>
+</header>
+
+<div class="layout">
+  <div class="sidebar">
+    <h2>Scenario</h2>
+    <div class="scenario-row">
+      <button class="scenario-btn" onclick="loadScenario('conservative')">Conservative</button>
+      <button class="scenario-btn active" onclick="loadScenario('base')">Base case</button>
+      <button class="scenario-btn" onclick="loadScenario('optimistic')">Optimistic</button>
+    </div>
+
+    <h2>Units & pricing</h2>
+    <div class="input-row">
+      <label>Units sold / month (Hero 400W kit)</label>
+      <input type="range" id="units" min="5" max="300" value="40" step="5" oninput="upd()">
+      <div class="val-display" id="units-v">40 units</div>
+    </div>
+    <div class="input-row">
+      <label>Upfront retail price (£)</label>
+      <input type="range" id="price" min="349" max="549" value="399" step="10" oninput="upd()">
+      <div class="val-display" id="price-v">£399</div>
+    </div>
+    <div class="input-row">
+      <label>% choosing subscription (18mo)</label>
+      <input type="range" id="subpct" min="20" max="80" value="60" step="5" oninput="upd()">
+      <div class="val-display" id="subpct-v">60%</div>
+    </div>
+    <div class="input-row">
+      <label>Subscription monthly price (£)</label>
+      <input type="range" id="submo" min="22" max="38" value="29" step="1" oninput="upd()">
+      <div class="val-display" id="submo-v">£29/mo × 18mo = £522</div>
+    </div>
+    <div class="input-row">
+      <label>BNPL provider fee (%)</label>
+      <input type="range" id="bnplfee" min="2" max="7" value="4" step="0.5" oninput="upd()">
+      <div class="val-display" id="bnplfee-v">4.0%</div>
+    </div>
+
+    <h2>Costs (per unit)</h2>
+    <div class="input-row">
+      <label>Landed COGS — panels + inverter + mount (£)</label>
+      <input type="range" id="cogs" min="110" max="220" value="160" step="5" oninput="upd()">
+      <div class="val-display" id="cogs-v">£160</div>
+    </div>
+    <div class="input-row">
+      <label>Packaging + branded inserts (£)</label>
+      <input type="range" id="pkg" min="4" max="15" value="7" step="1" oninput="upd()">
+      <div class="val-display" id="pkg-v">£7</div>
+    </div>
+    <div class="input-row">
+      <label>3PL pick, pack & UK shipping (£)</label>
+      <input type="range" id="fulfil" min="8" max="22" value="14" step="1" oninput="upd()">
+      <div class="val-display" id="fulfil-v">£14</div>
+    </div>
+    <div class="input-row">
+      <label>Warranty reserve (£/unit)</label>
+      <input type="range" id="warranty" min="2" max="10" value="4" step="1" oninput="upd()">
+      <div class="val-display" id="warranty-v">£4</div>
+    </div>
+
+    <h2>Fixed overheads / month</h2>
+    <div class="input-row">
+      <label>Marketing & ads (£/mo)</label>
+      <input type="range" id="mktg" min="500" max="15000" value="2500" step="250" oninput="upd()">
+      <div class="val-display" id="mktg-v">£2,500</div>
+    </div>
+    <div class="input-row">
+      <label>Shopify + apps + tools (£/mo)</label>
+      <input type="range" id="shopify" min="80" max="400" value="150" step="10" oninput="upd()">
+      <div class="val-display" id="shopify-v">£150</div>
+    </div>
+    <div class="input-row">
+      <label>Customer support / VA (£/mo)</label>
+      <input type="range" id="support" min="0" max="3000" value="400" step="100" oninput="upd()">
+      <div class="val-display" id="support-v">£400</div>
+    </div>
+    <div class="input-row">
+      <label>Misc / professional fees (£/mo)</label>
+      <input type="range" id="misc" min="100" max="2000" value="300" step="100" oninput="upd()">
+      <div class="val-display" id="misc-v">£300</div>
+    </div>
+
+    <h2>Growth</h2>
+    <div class="input-row">
+      <label>Monthly unit growth rate (%)</label>
+      <input type="range" id="growth" min="0" max="25" value="10" step="1" oninput="upd()">
+      <div class="val-display" id="growth-v">10%/mo</div>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <div class="kpis">
+      <div class="kpi">
+        <div class="kpi-label">Monthly revenue</div>
+        <div class="kpi-value neu" id="k-rev">—</div>
+        <div class="kpi-sub" id="k-rev-s"></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Gross profit</div>
+        <div class="kpi-value pos" id="k-gp">—</div>
+        <div class="kpi-sub" id="k-gp-s"></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Net profit (post-overhead)</div>
+        <div class="kpi-value" id="k-np">—</div>
+        <div class="kpi-sub" id="k-np-s"></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Break-even volume</div>
+        <div class="kpi-value neu" id="k-be">—</div>
+        <div class="kpi-sub">units per month</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Monthly P&L summary</h3>
+      <table>
+        <tr><th>Line item</th><th class="td-r">This month</th><th class="td-r">Annual run-rate</th></tr>
+        <tr><td class="td-bold">Gross revenue</td><td class="td-r td-bold" id="r-rev">—</td><td class="td-r" id="r-rev-a">—</td></tr>
+        <tr><td style="padding-left:20px;color:var(--muted)">→ Subscription revenue (net of BNPL fee)</td><td class="td-r" id="r-subrev">—</td><td class="td-r" id="r-subrev-a">—</td></tr>
+        <tr><td style="padding-left:20px;color:var(--muted)">→ Upfront revenue</td><td class="td-r" id="r-uprev">—</td><td class="td-r" id="r-uprev-a">—</td></tr>
+        <tr style="background:var(--bg)"><td class="td-bold">Cost of goods (COGS)</td><td class="td-r td-neg td-bold" id="r-cogs">—</td><td class="td-r td-neg" id="r-cogs-a">—</td></tr>
+        <tr><td style="padding-left:20px;color:var(--muted)">→ Panels + inverter + mount</td><td class="td-r" id="r-panels">—</td><td class="td-r" id="r-panels-a">—</td></tr>
+        <tr><td style="padding-left:20px;color:var(--muted)">→ Packaging</td><td class="td-r" id="r-pkg">—</td><td class="td-r" id="r-pkg-a">—</td></tr>
+        <tr><td style="padding-left:20px;color:var(--muted)">→ 3PL fulfillment + shipping</td><td class="td-r" id="r-ful">—</td><td class="td-r" id="r-ful-a">—</td></tr>
+        <tr><td style="padding-left:20px;color:var(--muted)">→ Warranty reserve</td><td class="td-r" id="r-war">—</td><td class="td-r" id="r-war-a">—</td></tr>
+        <tr style="background:var(--green-l)"><td class="td-bold">Gross profit</td><td class="td-r td-pos td-bold" id="r-gp">—</td><td class="td-r td-pos" id="r-gp-a">—</td></tr>
+        <tr style="background:var(--bg)"><td class="td-bold">Fixed overheads</td><td class="td-r td-neg td-bold" id="r-oh">—</td><td class="td-r td-neg" id="r-oh-a">—</td></tr>
+        <tr><td style="padding-left:20px;color:var(--muted)">→ Marketing & ads</td><td class="td-r" id="r-mktg">—</td><td class="td-r" id="r-mktg-a">—</td></tr>
+        <tr><td style="padding-left:20px;color:var(--muted)">→ Shopify + tools</td><td class="td-r" id="r-shop">—</td><td class="td-r" id="r-shop-a">—</td></tr>
+        <tr><td style="padding-left:20px;color:var(--muted)">→ Support + VA</td><td class="td-r" id="r-sup">—</td><td class="td-r" id="r-sup-a">—</td></tr>
+        <tr><td style="padding-left:20px;color:var(--muted)">→ Misc / professional fees</td><td class="td-r" id="r-misc">—</td><td class="td-r" id="r-misc-a">—</td></tr>
+        <tr id="np-row" style="background:var(--green-l)"><td class="td-bold">Net profit</td><td class="td-r td-bold" id="r-np">—</td><td class="td-r" id="r-np-a">—</td></tr>
+      </table>
+    </div>
+
+    <div class="chart-grid">
+      <div class="section">
+        <h3>Revenue mix</h3>
+        <div class="mix-wrap" id="mix-bar">
+          <div class="mix-seg" style="background:var(--green);color:white" id="mix-sub">Sub</div>
+          <div class="mix-seg" style="background:var(--sun);color:#5a3900" id="mix-up">Upfront</div>
+        </div>
+        <div style="display:flex;gap:16px;margin-bottom:16px">
+          <span style="font-size:12px;display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:var(--green);display:inline-block"></span>Subscription</span>
+          <span style="font-size:12px;display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:var(--sun);display:inline-block"></span>Upfront</span>
+        </div>
+        <table>
+          <tr><th>Metric</th><th class="td-r">Value</th></tr>
+          <tr><td>Subscription units/mo</td><td class="td-r" id="m-sub-u">—</td></tr>
+          <tr><td>Upfront units/mo</td><td class="td-r" id="m-up-u">—</td></tr>
+          <tr><td>Avg revenue per unit (net)</td><td class="td-r" id="m-arppu">—</td></tr>
+          <tr><td>Gross margin %</td><td class="td-r td-pos" id="m-gmpct">—</td></tr>
+          <tr><td>Net margin %</td><td class="td-r" id="m-nmpct">—</td></tr>
+        </table>
+      </div>
+
+      <div class="section">
+        <h3>Cost per unit breakdown</h3>
+        <table>
+          <tr><th>Component</th><th class="td-r">£/unit</th><th class="td-r">% of COGS</th></tr>
+          <tr><td>Panels + inverter + mount</td><td class="td-r" id="cu-panels">—</td><td class="td-r" id="cu-panels-p">—</td></tr>
+          <tr><td>Packaging</td><td class="td-r" id="cu-pkg">—</td><td class="td-r" id="cu-pkg-p">—</td></tr>
+          <tr><td>3PL fulfillment + shipping</td><td class="td-r" id="cu-ful">—</td><td class="td-r" id="cu-ful-p">—</td></tr>
+          <tr><td>Warranty reserve</td><td class="td-r" id="cu-war">—</td><td class="td-r" id="cu-war-p">—</td></tr>
+          <tr style="background:var(--bg)"><td class="td-bold">Total COGS / unit</td><td class="td-r td-bold" id="cu-total">—</td><td class="td-r">100%</td></tr>
+          <tr style="background:var(--green-l)"><td class="td-bold">Gross profit / unit</td><td class="td-r td-pos td-bold" id="cu-gp">—</td><td class="td-r td-pos" id="cu-gp-p">—</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>12-month projection <span class="tag tag-sun" id="growth-tag">+10%/mo unit growth</span></h3>
+      <table>
+        <tr>
+          <th>Month</th>
+          <th class="td-r">Units</th>
+          <th class="td-r">Revenue</th>
+          <th class="td-r">Gross profit</th>
+          <th class="td-r">Net profit</th>
+          <th class="td-r">Cumulative net</th>
+        </tr>
+        <tbody id="proj-body"></tbody>
+      </table>
+      <div class="assumption-note" id="proj-note"></div>
+    </div>
+
+    <div class="section">
+      <h3>Initial inventory investment (bootstrap estimate)</h3>
+      <table>
+        <tr><th>Item</th><th class="td-r">Quantity</th><th class="td-r">Unit cost</th><th class="td-r">Total</th></tr>
+        <tr><td>Hero 400W kits (DDP to 3PL)</td><td class="td-r">60</td><td class="td-r" id="boot-unit">—</td><td class="td-r" id="boot-total">—</td></tr>
+        <tr><td>Starter 200W kits</td><td class="td-r">20</td><td class="td-r">~£100</td><td class="td-r">£2,000</td></tr>
+        <tr><td>Shopify setup + apps (first 3mo)</td><td class="td-r">—</td><td class="td-r">—</td><td class="td-r" id="boot-shop">—</td></tr>
+        <tr><td>3PL onboarding + first inbound</td><td class="td-r">—</td><td class="td-r">—</td><td class="td-r">£300</td></tr>
+        <tr><td>Marketing (first 2 months)</td><td class="td-r">—</td><td class="td-r">—</td><td class="td-r" id="boot-mktg">—</td></tr>
+        <tr style="background:var(--sun-l)"><td class="td-bold">Total bootstrap capital needed</td><td class="td-r" colspan="2"></td><td class="td-r td-bold" id="boot-cap">—</td></tr>
+      </table>
+      <div class="assumption-note">Assumes DDP negotiated from Alibaba supplier · no equity investment needed at this scale · fundable via personal savings or a small business loan · 0% VAT on solar kits (until March 2027) reduces effective costs further.</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const scenarios={
+  conservative:{units:20,price:399,subpct:45,submo:29,bnplfee:5,cogs:175,pkg:7,fulfil:15,warranty:4,mktg:1500,shopify:150,support:200,misc:200,growth:6},
+  base:{units:40,price:399,subpct:60,submo:29,bnplfee:4,cogs:160,pkg:7,fulfil:14,warranty:4,mktg:2500,shopify:150,support:400,misc:300,growth:10},
+  optimistic:{units:80,price:419,subpct:70,submo:31,bnplfee:3.5,cogs:150,pkg:6,fulfil:12,warranty:3,mktg:4000,shopify:200,support:800,misc:400,growth:15}
+};
+function loadScenario(k){
+  const s=scenarios[k];
+  document.querySelectorAll('.scenario-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  for(const[id,val] of Object.entries(s)){
+    const el=document.getElementById(id);
+    if(el){el.value=val;}
+  }
+  upd();
+}
+function f(n,prefix='£'){return prefix+Math.round(n).toLocaleString()}
+function pct(n){return Math.round(n)+'%'}
+function upd(){
+  const units=+document.getElementById('units').value;
+  const price=+document.getElementById('price').value;
+  const subpct=+document.getElementById('subpct').value/100;
+  const submo=+document.getElementById('submo').value;
+  const bnplfee=+document.getElementById('bnplfee').value/100;
+  const cogs=+document.getElementById('cogs').value;
+  const pkg=+document.getElementById('pkg').value;
+  const fulfil=+document.getElementById('fulfil').value;
+  const warranty=+document.getElementById('warranty').value;
+  const mktg=+document.getElementById('mktg').value;
+  const shopify=+document.getElementById('shopify').value;
+  const support=+document.getElementById('support').value;
+  const misc=+document.getElementById('misc').value;
+  const growth=+document.getElementById('growth').value/100;
+
+  document.getElementById('units-v').textContent=units+' units';
+  document.getElementById('price-v').textContent='£'+price;
+  document.getElementById('subpct-v').textContent=Math.round(subpct*100)+'%';
+  document.getElementById('submo-v').textContent='£'+submo+'/mo × 18mo = £'+(submo*18);
+  document.getElementById('bnplfee-v').textContent=document.getElementById('bnplfee').value+'%';
+  document.getElementById('cogs-v').textContent='£'+cogs;
+  document.getElementById('pkg-v').textContent='£'+pkg;
+  document.getElementById('fulfil-v').textContent='£'+fulfil;
+  document.getElementById('warranty-v').textContent='£'+warranty;
+  document.getElementById('mktg-v').textContent='£'+mktg.toLocaleString();
+  document.getElementById('shopify-v').textContent='£'+shopify;
+  document.getElementById('support-v').textContent='£'+support;
+  document.getElementById('misc-v').textContent='£'+misc;
+  document.getElementById('growth-v').textContent=Math.round(growth*100)+'%/mo';
+
+  const subUnits=Math.round(units*subpct);
+  const upUnits=units-subUnits;
+  const subTotal=submo*18;
+  const upPrice=Math.round(price*0.85);
+  const subRevGross=subUnits*subTotal;
+  const subRevNet=subRevGross*(1-bnplfee);
+  const upRev=upUnits*upPrice;
+  const totalRev=subRevNet+upRev;
+
+  const cogsTotal=(cogs+pkg+fulfil+warranty)*units;
+  const panelsTotal=cogs*units;
+  const pkgTotal=pkg*units;
+  const fulTotal=fulfil*units;
+  const warTotal=warranty*units;
+
+  const gp=totalRev-cogsTotal;
+  const gpPct=totalRev>0?gp/totalRev*100:0;
+
+  const overhead=mktg+shopify+support+misc;
+  const np=gp-overhead;
+  const npPct=totalRev>0?np/totalRev*100:0;
+
+  const cogsPU=cogs+pkg+fulfil+warranty;
+  const avgRevPU=units>0?totalRev/units:0;
+  const gpPU=avgRevPU-cogsPU;
+  const beVol=overhead>0&&gpPU>0?Math.ceil(overhead/gpPU):0;
+
+  document.getElementById('k-rev').textContent=f(totalRev);
+  document.getElementById('k-rev-s').textContent=units+' units · '+f(totalRev*12)+'/yr run rate';
+  document.getElementById('k-gp').textContent=f(gp);
+  document.getElementById('k-gp-s').textContent=pct(gpPct)+' gross margin';
+  const npEl=document.getElementById('k-np');
+  npEl.textContent=f(np);
+  npEl.className='kpi-value '+(np>=0?'pos':'neg');
+  document.getElementById('k-np-s').textContent=pct(npPct)+' net margin';
+  document.getElementById('k-be').textContent=beVol;
+
+  const s=(v,id)=>{document.getElementById(id).textContent=v;};
+  const n=(v,id)=>{document.getElementById(id).textContent=f(v);};
+  const na=(v,id)=>{document.getElementById(id).textContent=f(v*12);};
+
+  n(totalRev,'r-rev');na(totalRev,'r-rev-a');
+  n(subRevNet,'r-subrev');na(subRevNet,'r-subrev-a');
+  n(upRev,'r-uprev');na(upRev,'r-uprev-a');
+  n(-cogsTotal,'r-cogs');na(-cogsTotal,'r-cogs-a');
+  n(-panelsTotal,'r-panels');na(-panelsTotal,'r-panels-a');
+  n(-pkgTotal,'r-pkg');na(-pkgTotal,'r-pkg-a');
+  n(-fulTotal,'r-ful');na(-fulTotal,'r-ful-a');
+  n(-warTotal,'r-war');na(-warTotal,'r-war-a');
+  n(gp,'r-gp');na(gp,'r-gp-a');
+  n(-overhead,'r-oh');na(-overhead,'r-oh-a');
+  n(-mktg,'r-mktg');na(-mktg,'r-mktg-a');
+  n(-shopify,'r-shop');na(-shopify,'r-shop-a');
+  n(-support,'r-sup');na(-support,'r-sup-a');
+  n(-misc,'r-misc');na(-misc,'r-misc-a');
+  const npRow=document.getElementById('np-row');
+  npRow.style.background=np>=0?'var(--green-l)':'var(--red-l)';
+  document.getElementById('r-np').textContent=f(np);
+  document.getElementById('r-np').style.color=np>=0?'var(--green)':'var(--red)';
+  document.getElementById('r-np-a').textContent=f(np*12);
+  document.getElementById('r-np-a').style.color=np>=0?'var(--green)':'var(--red)';
+
+  const subFlex=Math.round(subpct*100);
+  document.getElementById('mix-sub').style.flex=subFlex+'';
+  document.getElementById('mix-up').style.flex=(100-subFlex)+'';
+  document.getElementById('mix-sub').textContent=subFlex+'% sub';
+  document.getElementById('mix-up').textContent=(100-subFlex)+'% up';
+  s(subUnits,'m-sub-u');s(upUnits,'m-up-u');
+  s(f(avgRevPU),'m-arppu');
+  s(pct(gpPct),'m-gmpct');
+  document.getElementById('m-gmpct').style.color='var(--green)';
+  document.getElementById('m-nmpct').textContent=pct(npPct);
+  document.getElementById('m-nmpct').style.color=np>=0?'var(--green)':'var(--red)';
+
+  const cogsU=cogs+pkg+fulfil+warranty;
+  n(cogs,'cu-panels');s(pct(cogs/cogsU*100),'cu-panels-p');
+  n(pkg,'cu-pkg');s(pct(pkg/cogsU*100),'cu-pkg-p');
+  n(fulfil,'cu-ful');s(pct(fulfil/cogsU*100),'cu-ful-p');
+  n(warranty,'cu-war');s(pct(warranty/cogsU*100),'cu-war-p');
+  n(cogsU,'cu-total');
+  const gpU=avgRevPU-cogsU;
+  n(gpU,'cu-gp');
+  document.getElementById('cu-gp').style.color=gpU>0?'var(--green)':'var(--red)';
+  s(pct(avgRevPU>0?gpU/avgRevPU*100:0),'cu-gp-p');
+  document.getElementById('cu-gp-p').style.color=gpU>0?'var(--green)':'var(--red)';
+
+  document.getElementById('growth-tag').textContent='+'+Math.round(growth*100)+'%/mo unit growth';
+  let tbody='';
+  let cumNp=0;
+  for(let i=1;i<=12;i++){
+    const u=Math.round(units*Math.pow(1+growth,i-1));
+    const su=Math.round(u*subpct);
+    const uu=u-su;
+    const rev=(su*subTotal*(1-bnplfee))+(uu*upPrice);
+    const c=(cogs+pkg+fulfil+warranty)*u;
+    const gpr=rev-c;
+    const npr=gpr-overhead;
+    cumNp+=npr;
+    const npColor=npr>=0?'var(--green)':'var(--red)';
+    const cnColor=cumNp>=0?'var(--green)':'var(--red)';
+    tbody+=`<tr>
+      <td>Month ${i}</td>
+      <td class="td-r">${u}</td>
+      <td class="td-r">${f(rev)}</td>
+      <td class="td-r" style="color:var(--green)">${f(gpr)}</td>
+      <td class="td-r" style="color:${npColor}">${f(npr)}</td>
+      <td class="td-r" style="color:${cnColor};font-weight:500">${f(cumNp)}</td>
+    </tr>`;
+  }
+  document.getElementById('proj-body').innerHTML=tbody;
+  document.getElementById('proj-note').textContent='Units grow at '+Math.round(growth*100)+'%/month from base of '+units+'. Upfront price is £'+upPrice+' (15% discount vs subscription total of £'+subTotal+'). BNPL fee of '+Math.round(bnplfee*100)+'% applied to subscription revenue.';
+
+  const bootUnit=cogs+pkg;
+  const bootTotal=60*bootUnit;
+  const bootShop=shopify*3;
+  const bootMktg=mktg*2;
+  const bootCap=bootTotal+2000+bootShop+300+bootMktg;
+  n(bootUnit,'boot-unit');n(bootTotal,'boot-total');n(bootShop,'boot-shop');n(bootMktg,'boot-mktg');n(bootCap,'boot-cap');
+}
+upd();
+</script>
+</body>
+</html>
