@@ -73,6 +73,7 @@ tr:last-child td{border-bottom:none}
 </header>
 
 <div class="layout">
+  <!-- SIDEBAR INPUTS -->
   <div class="sidebar">
     <h2>Scenario</h2>
     <div class="scenario-row">
@@ -160,8 +161,10 @@ tr:last-child td{border-bottom:none}
     </div>
   </div>
 
+  <!-- MAIN OUTPUT -->
   <div class="main">
 
+    <!-- KPIs -->
     <div class="kpis">
       <div class="kpi">
         <div class="kpi-label">Monthly revenue</div>
@@ -185,6 +188,7 @@ tr:last-child td{border-bottom:none}
       </div>
     </div>
 
+    <!-- P&L TABLE -->
     <div class="section">
       <h3>Monthly P&L summary</h3>
       <table>
@@ -208,6 +212,7 @@ tr:last-child td{border-bottom:none}
     </div>
 
     <div class="chart-grid">
+      <!-- REVENUE MIX -->
       <div class="section">
         <h3>Revenue mix</h3>
         <div class="mix-wrap" id="mix-bar">
@@ -228,6 +233,7 @@ tr:last-child td{border-bottom:none}
         </table>
       </div>
 
+      <!-- COST BREAKDOWN -->
       <div class="section">
         <h3>Cost per unit breakdown</h3>
         <table>
@@ -242,6 +248,7 @@ tr:last-child td{border-bottom:none}
       </div>
     </div>
 
+    <!-- 12-MONTH PROJECTION -->
     <div class="section">
       <h3>12-month projection <span class="tag tag-sun" id="growth-tag">+10%/mo unit growth</span></h3>
       <table>
@@ -258,6 +265,7 @@ tr:last-child td{border-bottom:none}
       <div class="assumption-note" id="proj-note"></div>
     </div>
 
+    <!-- BOOTSTRAP NOTE -->
     <div class="section">
       <h3>Initial inventory investment (bootstrap estimate)</h3>
       <table>
@@ -410,6 +418,7 @@ function upd(){
   s(pct(avgRevPU>0?gpU/avgRevPU*100:0),'cu-gp-p');
   document.getElementById('cu-gp-p').style.color=gpU>0?'var(--green)':'var(--red)';
 
+  // 12-month table
   document.getElementById('growth-tag').textContent='+'+Math.round(growth*100)+'%/mo unit growth';
   let tbody='';
   let cumNp=0;
@@ -436,6 +445,7 @@ function upd(){
   document.getElementById('proj-body').innerHTML=tbody;
   document.getElementById('proj-note').textContent='Units grow at '+Math.round(growth*100)+'%/month from base of '+units+'. Upfront price is £'+upPrice+' (15% discount vs subscription total of £'+subTotal+'). BNPL fee of '+Math.round(bnplfee*100)+'% applied to subscription revenue.';
 
+  // Bootstrap
   const bootUnit=cogs+pkg;
   const bootTotal=60*bootUnit;
   const bootShop=shopify*3;
