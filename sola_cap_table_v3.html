@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MySola Ltd — Cap Table Model v3</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sun:        #F5A623;
+    --sun-dark:   #D88A0F;
+    --sun-light:  #FFF3DC;
+    --teal:       #1A6B5A;
+    --teal-mid:   #2E8B73;
+    --teal-light: #E0F2EE;
+    --slate:      #1C2B2A;
+    --slate-mid:  #3D4F4E;
+    --muted:      #7A8E8C;
+    --paper:      #FBFAF5;
+    --off-white:  #F8F6F1;
+    --white:      #FFFFFF;
+    --border:     rgba(28,43,42,0.10);
+    --red:        #C0392B;
+    --red-light:  #FDECEA;
+    --r:          14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--slate); font-size: 14px; line-height: 1.6; }
+
+  .header { background: var(--slate); color: var(--white); padding: 32px 40px 28px; display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--white); display: flex; align-items: center; gap: 6px; }
+  .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sun); }
+  .header-meta { font-size: 12px; color: rgba(255,255,255,0.5); text-align: right; line-height: 1.8; }
+  .body { max-width: 960px; margin: 0 auto; padding: 36px 24px 60px; }
+  .section { margin-bottom: 36px; }
+  .section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--sun); margin-bottom: 6px; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--slate); margin-bottom: 16px; }
+
+  .hl { border-radius: var(--r); padding: 14px 18px; font-size: 13px; line-height: 1.65; margin-bottom: 14px; }
+  .hl-teal  { background: var(--teal-light); border-left: 3px solid var(--teal); }
+  .hl-amber { background: var(--sun-light);  border-left: 3px solid var(--sun); }
+  .hl-red   { background: var(--red-light);  border-left: 3px solid var(--red); }
+  .hl-slate { background: var(--off-white);  border-left: 3px solid var(--slate-mid); }
+  .hl strong { font-weight: 600; }
+
+  .toggle-wrap { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .toggle-btn { padding: 7px 18px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--white); color: var(--muted); cursor: pointer; font-size: 12px; font-weight: 500; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+  .toggle-btn:hover { border-color: var(--teal); color: var(--teal); }
+  .toggle-btn.active { background: var(--teal); color: var(--white); border-color: var(--teal); }
+
+  .table-card { background: var(--white); border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); margin-bottom: 16px; }
+  .table-title { background: var(--slate); color: var(--white); padding: 10px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
+  .round-badge { background: var(--sun); color: var(--slate); border-radius: 10px; padding: 2px 10px; font-size: 10px; font-weight: 700; white-space: nowrap; }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: var(--off-white); padding: 9px 14px; text-align: left; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--border); }
+  th.r, td.r { text-align: right; }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  .founder-row td { background: var(--teal-light); }
+  .total-row td   { background: var(--off-white); font-weight: 600; border-top: 2px solid var(--border); }
+  .event-row td   { background: var(--sun-light); font-size: 12px; color: var(--slate-mid); font-style: italic; }
+
+  .mono { font-family: 'DM Mono', monospace; font-size: 12px; }
+  .issue-badge   { display:inline-block; background:var(--sun-light);  color:var(--sun-dark); border-radius:6px; padding:1px 7px; font-family:'DM Mono',monospace; font-size:11px; font-weight:500; }
+  .forfeit-tag   { display:inline-block; background:var(--red-light);  color:var(--red);      border-radius:6px; padding:1px 7px; font-family:'DM Mono',monospace; font-size:11px; }
+  .vested-tag    { display:inline-block; background:var(--teal-light); color:var(--teal);     border-radius:6px; padding:1px 7px; font-family:'DM Mono',monospace; font-size:11px; }
+
+  .bar-wrap { width: 100px; }
+  .bar-bg   { background: var(--off-white); border-radius: 4px; height: 7px; }
+  .bar-fill { height: 7px; border-radius: 4px; }
+
+  .scenario-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .scenario-card { background: var(--white); border-radius: var(--r); border: 1px solid var(--border); overflow: hidden; }
+  .scenario-card-header { padding: 10px 14px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; }
+  .sc-full .scenario-card-header { background: var(--teal-light); color: var(--teal); }
+  .sc-part .scenario-card-header { background: var(--sun-light);  color: var(--sun-dark); }
+  .sc-none .scenario-card-header { background: var(--off-white);  color: var(--muted); }
+  .scenario-card-body { padding: 12px 14px; }
+  .scenario-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .scenario-row:last-child { border-bottom: none; }
+  .scenario-pct { font-family: 'DM Mono', monospace; font-weight: 500; font-size: 13px; }
+  .founder-pct  { color: var(--teal); font-weight: 600; }
+
+  .control-bar-wrap { margin-bottom: 20px; }
+  .control-label { font-size: 12px; color: var(--slate-mid); margin-bottom: 8px; display: flex; justify-content: space-between; }
+  .control-bar-outer { background: var(--off-white); border-radius: 6px; height: 14px; position: relative; border: 1px solid var(--border); }
+  .control-bar-fill { height: 14px; border-radius: 6px 0 0 6px; transition: width 0.4s; }
+  .threshold-marker { position: absolute; top: -4px; bottom: -4px; width: 2px; border-radius: 2px; }
+  .threshold-label { position: absolute; top: -22px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; transform: translateX(-50%); }
+
+  .note { font-size: 11px; color: var(--muted); padding: 10px 14px; background: var(--off-white); border-radius: 8px; margin-top: 10px; line-height: 1.7; }
+
+  .steps-table td { vertical-align: top; padding-top: 13px; }
+  .step-num { color: var(--teal); font-weight: 700; width: 24px; }
+
+  @media (max-width: 680px) {
+    .header { padding: 24px 20px; flex-direction: column; align-items: flex-start; }
+    .body { padding: 24px 16px 40px; }
+    .scenario-grid { grid-template-columns: 1fr; }
+    .bar-wrap { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="logo">Sola <div class="logo-dot"></div></div>
+    <div style="color:rgba(255,255,255,0.55);font-size:13px;margin-top:4px">MySola Ltd — Cap Table Model v3</div>
+  </div>
+  <div class="header-meta">
+    Company No. 17185927<br>
+    Incorporated 28 April 2026<br>
+    Upfront issuance with forfeiture conditions
+  </div>
+</div>
+
+<div class="body">
+
+  <!-- STRUCTURE -->
+  <div class="section">
+    <div class="section-label">Structure</div>
+    <div class="section-title">How the equity is being issued</div>
+    <div class="hl hl-teal">
+      <strong>Pre-Round 1 grants (now).</strong> Sunil Hiranandani and Al Thorpe each receive 4 shares at £1.00 nominal, representing 4% of the current 100-share pool. Shares are subject to forfeiture conditions in the shareholders' agreement, with milestones vesting in two equal tranches at months 12 and 24. Issuing at nil valuation means no income tax exposure for either party. S431 elections to be signed within 14 days.
+    </div>
+    <div class="hl hl-amber">
+      <strong>Round 1 cash (Sunil only).</strong> Sunil invests £20k at a £1m pre-money valuation. With 108 shares in issue at Round 1 open, the implied share price is £9,259.26. His £20k buys approximately 2.16 shares — rounded to 2 whole shares, giving him 1.9% of the 110-share post-Round 1 pool (before other angels). The pre-money valuation is clean and the 1.9% figure is what £20k naturally buys at £1m pre-money; no special treatment is needed.
+    </div>
+    <div class="hl hl-slate">
+      <strong>Percentages are Option A.</strong> Sunil and Al's 4% grants are 4% of the pre-Round 1 pool. They dilute alongside everyone else as rounds progress. Their final fully-diluted percentages are lower than 4% — this is normal and expected.
+    </div>
+  </div>
+
+  <!-- DAY ONE -->
+  <div class="section">
+    <div class="section-label">Step 1 — Now</div>
+    <div class="section-title">Pre-Round 1 equity grants</div>
+    <div class="table-card">
+      <div class="table-title">Register of Members — after pre-R1 grants <span class="round-badge">Pre-Money</span></div>
+      <table>
+        <thead>
+          <tr><th>Name</th><th>Role</th><th class="r">Shares</th><th class="r">Of which forfeitable</th><th class="r">%</th><th>Conditions</th></tr>
+        </thead>
+        <tbody>
+          <tr class="founder-row">
+            <td><strong>Charles Solanki</strong></td>
+            <td>Founder</td>
+            <td class="r mono">100</td>
+            <td class="r"><span class="vested-tag">unconditional</span></td>
+            <td class="r mono">92.59%</td>
+            <td style="font-size:12px;color:var(--muted)">Subscriber shares, incorporated 28 Apr 2026</td>
+          </tr>
+          <tr>
+            <td><strong>Sunil Hiranandani</strong></td>
+            <td>Advisor</td>
+            <td class="r mono">4</td>
+            <td class="r"><span class="forfeit-tag">4 forfeitable</span></td>
+            <td class="r mono">3.70%</td>
+            <td style="font-size:12px;color:var(--muted)">Milestone vesting: 2 shares at M12, 2 shares at M24</td>
+          </tr>
+          <tr>
+            <td><strong>Al Thorpe</strong></td>
+            <td>Advisor</td>
+            <td class="r mono">4</td>
+            <td class="r"><span class="forfeit-tag">4 forfeitable</span></td>
+            <td class="r mono">3.70%</td>
+            <td style="font-size:12px;color:var(--muted)">Milestone vesting: 2 shares at M12, 2 shares at M24</td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="2"><strong>Total</strong></td>
+            <td class="r mono">108</td>
+            <td class="r" style="font-size:11px;color:var(--muted)">8 shares forfeitable</td>
+            <td class="r mono">100.0%</td>
+            <td style="font-size:12px;color:var(--muted)">Post-money value: ~£0 (nominal only)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">SH01 return of allotments must be filed at Companies House within one month of issuing these shares. S431 elections to be signed by Charles (for the company) and each of Sunil and Al within 14 days of issuance.</div>
+  </div>
+
+  <!-- ROUND 1 -->
+  <div class="section">
+    <div class="section-label">Step 2 — Round 1</div>
+    <div class="section-title">£50k SEIS raise at £1m pre-money</div>
+
+    <div class="hl hl-teal">
+      <strong>Share price.</strong> Pre-money valuation £1,000,000 divided by 108 shares in issue = <strong>£9,259.26 per share</strong>. Sunil's £20k = 2.16 shares, rounded to 2. Other angels' £30k = 3.24 shares, rounded to 3. Total Round 1 new shares: 5. Post-Round 1 pool: 113 shares. Post-money valuation: £1,046,296.
+    </div>
+
+    <div class="table-card">
+      <div class="table-title">Share issuances — Round 1 <span class="round-badge">Pre-Pre-Seed</span></div>
+      <table>
+        <thead><tr><th>Party</th><th class="r">Cash</th><th class="r">Price / share</th><th class="r">New shares</th><th class="r">Running total</th></tr></thead>
+        <tbody>
+          <tr class="event-row"><td colspan="5">108 shares in issue before Round 1 opens</td></tr>
+          <tr>
+            <td><strong>Sunil Hiranandani</strong> (cash)</td>
+            <td class="r mono">£20,000</td>
+            <td class="r mono">£9,259.26</td>
+            <td class="r"><span class="issue-badge">+2 shares</span></td>
+            <td class="r mono">110</td>
+          </tr>
+          <tr>
+            <td><strong>Other angels</strong></td>
+            <td class="r mono">£30,000</td>
+            <td class="r mono">£9,259.26</td>
+            <td class="r"><span class="issue-badge">+3 shares</span></td>
+            <td class="r mono">113</td>
+          </tr>
+          <tr class="total-row">
+            <td><strong>Post-Round 1 total</strong></td>
+            <td class="r mono">£50,000</td>
+            <td></td>
+            <td class="r mono">+5</td>
+            <td class="r mono">113</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-card">
+      <div class="table-title">Cap table after Round 1 <span class="round-badge">Post-Round 1</span></div>
+      <table>
+        <thead><tr><th>Name</th><th class="r">Shares</th><th class="r">Forfeitable</th><th class="r">%</th><th>Bar</th></tr></thead>
+        <tbody>
+          <tr class="founder-row">
+            <td><strong>Charles Solanki</strong></td>
+            <td class="r mono">100</td>
+            <td class="r"><span class="vested-tag">unconditional</span></td>
+            <td class="r mono">88.50%</td>
+            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:88.5%;background:#1A6B5A"></div></div></div></td>
+          </tr>
+          <tr>
+            <td><strong>Sunil Hiranandani</strong></td>
+            <td class="r mono">6</td>
+            <td class="r"><span class="forfeit-tag">4 forfeitable</span></td>
+            <td class="r mono">5.31%</td>
+            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:5.31%;background:#F5A623"></div></div></div></td>
+          </tr>
+          <tr>
+            <td><strong>Al Thorpe</strong></td>
+            <td class="r mono">4</td>
+            <td class="r"><span class="forfeit-tag">4 forfeitable</span></td>
+            <td class="r mono">3.54%</td>
+            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:3.54%;background:#E8A838"></div></div></div></td>
+          </tr>
+          <tr>
+            <td><strong>Other angels</strong></td>
+            <td class="r mono">3</td>
+            <td class="r"><span class="vested-tag">unconditional</span></td>
+            <td class="r mono">2.65%</td>
+            <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:2.65%;background:#7FA09A"></div></div></div></td>
+          </tr>
+          <tr class="total-row">
+            <td><strong>Total</strong></td>
+            <td class="r mono">113</td>
+            <td class="r" style="font-size:11px;color:var(--muted)">8 shares forfeitable</td>
+            <td class="r mono">100.0%</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">Sunil's 1.77% from his £20k cash (2 shares out of 113) combined with his 3.54% milestone grant gives him a total of 5.31% at this stage, all subject to forfeiture except the 2 cash shares. His cash shares are unconditional from the moment Round 1 closes.</div>
+  </div>
+
+  <!-- ROUND 2 -->
+  <div class="section">
+    <div class="section-label">Step 3 — Round 2</div>
+    <div class="section-title">£200k SEIS raise at £2m pre-money</div>
+
+    <div class="hl hl-teal">
+      <strong>Share price.</strong> Pre-money valuation £2,000,000 divided by 113 shares in issue = <strong>£17,699.12 per share</strong>. Angel investment of £200k = 11.30 shares, rounded to 11. Post-Round 2 pool: 124 shares. Post-money valuation: £2,194,690.
+    </div>
+
+    <div class="table-card">
+      <div class="table-title">Share issuances — Round 2 <span class="round-badge">Pre-Seed</span></div>
+      <table>
+        <thead><tr><th>Party</th><th class="r">Cash</th><th class="r">Price / share</th><th class="r">New shares</th><th class="r">Running total</th></tr></thead>
+        <tbody>
+          <tr class="event-row"><td colspan="5">113 shares in issue before Round 2 opens</td></tr>
+          <tr>
+            <td><strong>R2 angel investors</strong></td>
+            <td class="r mono">£200,000</td>
+            <td class="r mono">£17,699.12</td>
+            <td class="r"><span class="issue-badge">+11 shares</span></td>
+            <td class="r mono">124</td>
+          </tr>
+          <tr class="total-row">
+            <td><strong>Post-Round 2 total</strong></td>
+            <td class="r mono">£200,000</td>
+            <td></td>
+            <td class="r mono">+11</td>
+            <td class="r mono">124</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FINAL — SCENARIO TOGGLE -->
+  <div class="section">
+    <div class="section-label">Step 4 — Final cap table</div>
+    <div class="section-title" id="final-title">Fully diluted — all milestones hit</div>
+
+    <div class="toggle-wrap">
+      <button class="toggle-btn active" onclick="setScenario('full',this)">All milestones (Sunil 4%, Al 4%)</button>
+      <button class="toggle-btn"        onclick="setScenario('part',this)">Partial (Sunil 4%, Al 2%)</button>
+      <button class="toggle-btn"        onclick="setScenario('none',this)">No milestones (Sunil cash only, Al 0%)</button>
+    </div>
+
+    <div id="final-cap-table"></div>
+
+    <div class="control-bar-wrap" style="margin-top:20px">
+      <div class="control-label">
+        <span>Founder control — Charles Solanki</span>
+        <span class="mono" id="ctrl-label"></span>
+      </div>
+      <div class="control-bar-outer">
+        <div class="control-bar-fill" id="ctrl-bar"></div>
+        <div class="threshold-marker" style="left:75%;background:var(--red)">
+          <div class="threshold-label" style="color:var(--red)">75% — special resolutions</div>
+        </div>
+        <div class="threshold-marker" style="left:80%;background:var(--sun-dark)">
+          <div class="threshold-label" style="color:var(--sun-dark)">80% — target</div>
+        </div>
+      </div>
+    </div>
+    <div id="ctrl-alert" class="hl" style="margin-top:16px"></div>
+  </div>
+
+  <!-- COMPARISON -->
+  <div class="section">
+    <div class="section-label">Scenario comparison</div>
+    <div class="section-title">All three outcomes side by side</div>
+    <div class="scenario-grid">
+
+      <div class="scenario-card sc-full">
+        <div class="scenario-card-header">All milestones</div>
+        <div class="scenario-card-body">
+          <div class="scenario-row"><span>Charles Solanki</span><span class="scenario-pct founder-pct" id="s-full-charles"></span></div>
+          <div class="scenario-row"><span>Sunil Hiranandani</span><span class="scenario-pct" id="s-full-sunil"></span></div>
+          <div class="scenario-row"><span>Al Thorpe</span><span class="scenario-pct" id="s-full-al"></span></div>
+          <div class="scenario-row"><span>R1 other angels</span><span class="scenario-pct" id="s-full-r1"></span></div>
+          <div class="scenario-row"><span>R2 angels</span><span class="scenario-pct" id="s-full-r2"></span></div>
+          <div class="scenario-row" style="border-top:2px solid var(--border);font-weight:600"><span>Total shares</span><span class="scenario-pct mono" id="s-full-total"></span></div>
+        </div>
+      </div>
+
+      <div class="scenario-card sc-part">
+        <div class="scenario-card-header">Partial (Al 2%)</div>
+        <div class="scenario-card-body">
+          <div class="scenario-row"><span>Charles Solanki</span><span class="scenario-pct founder-pct" id="s-part-charles"></span></div>
+          <div class="scenario-row"><span>Sunil Hiranandani</span><span class="scenario-pct" id="s-part-sunil"></span></div>
+          <div class="scenario-row"><span>Al Thorpe</span><span class="scenario-pct" id="s-part-al"></span></div>
+          <div class="scenario-row"><span>R1 other angels</span><span class="scenario-pct" id="s-part-r1"></span></div>
+          <div class="scenario-row"><span>R2 angels</span><span class="scenario-pct" id="s-part-r2"></span></div>
+          <div class="scenario-row" style="border-top:2px solid var(--border);font-weight:600"><span>Total shares</span><span class="scenario-pct mono" id="s-part-total"></span></div>
+        </div>
+      </div>
+
+      <div class="scenario-card sc-none">
+        <div class="scenario-card-header">No milestones</div>
+        <div class="scenario-card-body">
+          <div class="scenario-row"><span>Charles Solanki</span><span class="scenario-pct founder-pct" id="s-none-charles"></span></div>
+          <div class="scenario-row"><span>Sunil Hiranandani</span><span class="scenario-pct" id="s-none-sunil"></span></div>
+          <div class="scenario-row"><span>Al Thorpe</span><span class="scenario-pct" id="s-none-al"></span></div>
+          <div class="scenario-row"><span>R1 other angels</span><span class="scenario-pct" id="s-none-r1"></span></div>
+          <div class="scenario-row"><span>R2 angels</span><span class="scenario-pct" id="s-none-r2"></span></div>
+          <div class="scenario-row" style="border-top:2px solid var(--border);font-weight:600"><span>Total shares</span><span class="scenario-pct mono" id="s-none-total"></span></div>
+        </div>
+      </div>
+
+    </div>
+    <div class="note">When milestones are missed, forfeited shares are bought back at £1.00 nominal and cancelled. The total pool shrinks, so Charles's percentage rises — not because he gains shares, but because the denominator falls. Percentages rounded to two decimal places.</div>
+  </div>
+
+  <!-- ANALYSIS -->
+  <div class="section">
+    <div class="section-label">Analysis</div>
+    <div class="section-title">Key observations</div>
+    <div class="hl hl-teal">
+      <strong>Founder control is comfortable in all scenarios.</strong> Charles holds above 80% if no milestones are hit, and stays well above 75% even when all milestones are fully earned. The 75% special resolution threshold is secure throughout.
+    </div>
+    <div class="hl hl-amber">
+      <strong>Sunil's combined stake reflects two separate grants.</strong> His 4 milestone shares (issued now) plus his 2 cash shares (issued at Round 1) give him 6 shares total — but they dilute differently because the cash shares enter a larger pool. His final percentage varies by milestone scenario; toggle through the outcomes above to see each case.
+    </div>
+    <div class="hl hl-red">
+      <strong>Al's milestones must be defined before the shareholders' agreement is signed.</strong> Sunil's milestone triggers have a natural shape tied to fundraising. Al's are not yet specified. The forfeiture schedule is unenforceable without specific, measurable, time-bound triggers. This is the one outstanding item before any documents are executed.
+    </div>
+    <div class="hl hl-slate">
+      <strong>Round 1 share price is slightly lower than a clean 100-share model.</strong> Because Sunil and Al's shares exist before Round 1 opens, the pre-money valuation is divided across 108 shares rather than 100. At £1m pre-money this produces a price of £9,259 per share rather than £10,000. For investors this is immaterial; the valuation is what they're buying into, not the share price.
+    </div>
+  </div>
+
+  <!-- NEXT STEPS -->
+  <div class="section">
+    <div class="section-label">Next steps</div>
+    <div class="section-title">Before any shares are issued</div>
+    <div class="table-card">
+      <table class="steps-table">
+        <tbody>
+          <tr><td class="step-num">1</td><td><strong>Define Al's milestones</strong> — specific, measurable and time-bound. Must be agreed in writing before the shareholders' agreement is drafted.</td></tr>
+          <tr><td class="step-num">2</td><td><strong>Shareholders' agreement</strong> — forfeiture schedule as an annexe; reserved matters; drag-along and tag-along rights; good leaver / bad leaver definitions; buy-back mechanics at £1.00 nominal for forfeited shares.</td></tr>
+          <tr><td class="step-num">3</td><td><strong>S431 elections</strong> — signed by Charles (on behalf of the company) and each of Sunil and Al within 14 days of share issuance. Eliminates any future HMRC employment-related securities exposure.</td></tr>
+          <tr><td class="step-num">4</td><td><strong>SH01 filing</strong> — return of allotments to Companies House within one month of each issuance event. Required for the pre-R1 grants now, and again at each cash round close.</td></tr>
+          <tr><td class="step-num">5</td><td><strong>Becky's J30 transfer</strong> — transfer a portion of Charles's 100 shares to Becky via stock transfer form before Round 1. The founder block percentage is unchanged; the register simply reflects both names. Agree the split between Charles and Becky first.</td></tr>
+          <tr><td class="step-num">6</td><td><strong>SEIS advance assurance</strong> — apply to HMRC before Round 1 closes. Investors cannot claim SEIS tax relief without it and it materially affects their willingness to invest.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="note">This document is for internal planning only and does not constitute legal or financial advice. All equity arrangements should be reviewed by a qualified solicitor before execution.</div>
+
+</div>
+
+<script>
+// ── CONSTANTS ───────────────────────────────────────────────────────────────
+const CHARLES   = 100;
+const S_MILE    = 4;   // Sunil milestone shares (pre-R1)
+const AL_FULL_S = 4;   // Al full milestone shares
+const AL_PART_S = 2;   // Al partial milestone shares
+const S_CASH    = 2;   // Sunil cash shares (R1, £20k at £9,259.26/share)
+const OTHER_R1  = 3;   // Other angels R1 (£30k)
+const R2_ANGELS = 11;  // R2 angels (£200k at ~£17,699/share)
+
+// Build scenario rows — forfeited shares cancelled, pool shrinks
+function buildRows(alVested, sunilMilestoneVested) {
+  const sunilTotal = S_CASH + sunilMilestoneVested;
+  const total = CHARLES + sunilTotal + alVested + OTHER_R1 + R2_ANGELS;
+  const rows = [
+    { name:'Charles Solanki',    shares: CHARLES,    color:'#1A6B5A', founder: true },
+    { name:'Sunil Hiranandani',  shares: sunilTotal, color:'#F5A623' },
+    { name:'Al Thorpe',          shares: alVested,   color:'#E8A838' },
+    { name:'R1 other angels',    shares: OTHER_R1,   color:'#7FA09A' },
+    { name:'R2 angels',          shares: R2_ANGELS,  color:'#B0D4CC' },
+  ].filter(r => r.shares > 0);
+  return { rows, total };
+}
+
+const SCENARIOS = {
+  full: { label:'All milestones hit',       data: buildRows(AL_FULL_S, S_MILE) },
+  part: { label:'Partial — Al 2%, Sunil 4%', data: buildRows(AL_PART_S, S_MILE) },
+  none: { label:'No milestones hit',         data: buildRows(0, 0) },
+};
+
+let current = 'full';
+
+function fmt2(n)  { return n.toFixed(2) + '%'; }
+
+function setScenario(key, btn) {
+  current = key;
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFinal();
+}
+
+function getNote(key, name, total) {
+  const s = SCENARIOS[key].data;
+  const r = s.rows.find(x => x.name === name);
+  if (!r) return '—';
+  const pct = (r.shares / total) * 100;
+  const notes = {
+    full: {
+      'Charles Solanki':   'Founder shares unchanged from incorporation.',
+      'Sunil Hiranandani': `${S_MILE} milestone shares (fully vested) + ${S_CASH} cash shares (R1). Combined ${fmt2(pct)}.`,
+      'Al Thorpe':         `${AL_FULL_S} milestone shares fully vested. ${fmt2(pct)} fully diluted.`,
+      'R1 other angels':   `${OTHER_R1} shares from £30k at Round 1.`,
+      'R2 angels':         `${R2_ANGELS} shares from £200k at Round 2.`,
+    },
+    part: {
+      'Charles Solanki':   'Founder shares unchanged. Al partial — 2 shares forfeited and cancelled.',
+      'Sunil Hiranandani': `${S_MILE} milestone shares (fully vested) + ${S_CASH} cash shares (R1). Combined ${fmt2(pct)}.`,
+      'Al Thorpe':         `${AL_PART_S} shares vested; ${AL_FULL_S - AL_PART_S} shares forfeited and cancelled.`,
+      'R1 other angels':   `${OTHER_R1} shares from £30k at Round 1.`,
+      'R2 angels':         `${R2_ANGELS} shares from £200k at Round 2.`,
+    },
+    none: {
+      'Charles Solanki':   'Founder shares unchanged. All 8 forfeitable shares cancelled — pool reduced to 116.',
+      'Sunil Hiranandani': `${S_CASH} cash shares only (R1). All ${S_MILE} milestone shares forfeited and cancelled.`,
+      'R1 other angels':   `${OTHER_R1} shares from £30k at Round 1.`,
+      'R2 angels':         `${R2_ANGELS} shares from £200k at Round 2.`,
+    },
+  };
+  return notes[key][name] || '';
+}
+
+function renderFinal() {
+  const s     = SCENARIOS[current];
+  const { rows, total } = s.data;
+  const founder = rows.find(r => r.founder);
+  const founderPct = founder ? (founder.shares / total) * 100 : 0;
+
+  const titles = {
+    full: 'Fully diluted — all milestones hit',
+    part: 'Fully diluted — partial milestones (Al 2%)',
+    none: 'Fully diluted — no milestones hit',
+  };
+  document.getElementById('final-title').textContent = titles[current];
+
+  const badgeLabels = { full:'All milestones', part:'Partial milestones', none:'No milestones' };
+
+  const tableRows = rows.map(r => {
+    const pct  = (r.shares / total) * 100;
+    const barW = Math.min(pct, 100).toFixed(2);
+    return `<tr ${r.founder ? 'class="founder-row"' : ''}>
+      <td><strong>${r.name}</strong></td>
+      <td class="r mono">${r.shares}</td>
+      <td class="r mono">${fmt2(pct)}</td>
+      <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:${barW}%;background:${r.color}"></div></div></div></td>
+      <td style="color:var(--muted);font-size:12px">${getNote(current, r.name, total)}</td>
+    </tr>`;
+  }).join('') + `<tr class="total-row">
+    <td><strong>Total</strong></td>
+    <td class="r mono">${total}</td>
+    <td class="r mono">100.00%</td>
+    <td></td>
+    <td style="color:var(--muted);font-size:12px">Total cash raised: £250,000</td>
+  </tr>`;
+
+  document.getElementById('final-cap-table').innerHTML = `
+    <div class="table-card">
+      <div class="table-title">Fully diluted cap table <span class="round-badge">${badgeLabels[current]}</span></div>
+      <table>
+        <thead><tr><th>Party</th><th class="r">Shares</th><th class="r">%</th><th>Bar</th><th>Notes</th></tr></thead>
+        <tbody>${tableRows}</tbody>
+      </table>
+    </div>`;
+
+  // Control bar
+  const barCol = founderPct >= 80 ? '#1A6B5A' : founderPct >= 75 ? '#F5A623' : '#C0392B';
+  document.getElementById('ctrl-bar').style.width      = Math.min(founderPct, 100).toFixed(2) + '%';
+  document.getElementById('ctrl-bar').style.background = barCol;
+  document.getElementById('ctrl-label').textContent    = fmt2(founderPct);
+
+  const alertEl = document.getElementById('ctrl-alert');
+  if (founderPct >= 80) {
+    alertEl.className = 'hl hl-teal';
+    alertEl.innerHTML = `<strong>Founder stake: ${fmt2(founderPct)}</strong> — above your 80% target. You retain full constitutional control.`;
+  } else if (founderPct >= 75) {
+    alertEl.className = 'hl hl-amber';
+    alertEl.innerHTML = `<strong>Founder stake: ${fmt2(founderPct)}</strong> — below your 80% personal target but above the 75% threshold for special resolutions. You cannot be outvoted on constitutional changes.`;
+  } else {
+    alertEl.className = 'hl hl-red';
+    alertEl.innerHTML = `<strong>Warning — founder stake: ${fmt2(founderPct)}</strong> — below 75%. You lose sole blocking power on special resolutions. Review the equity grants.`;
+  }
+
+  renderComparison();
+}
+
+function renderComparison() {
+  const parties = ['Charles Solanki','Sunil Hiranandani','Al Thorpe','R1 other angels','R2 angels'];
+  const keys    = ['full','part','none'];
+  keys.forEach(k => {
+    const { rows, total } = SCENARIOS[k].data;
+    const get = name => {
+      const r = rows.find(x => x.name === name);
+      return r ? fmt2((r.shares / total) * 100) : '—';
+    };
+    parties.forEach(p => {
+      const safeName = p.split(' ')[0].toLowerCase() + (p.includes('other') ? '-r1' : p.includes('R2') ? '-r2' : '');
+      const id = `s-${k}-${
+        p === 'Charles Solanki'   ? 'charles' :
+        p === 'Sunil Hiranandani' ? 'sunil'   :
+        p === 'Al Thorpe'         ? 'al'      :
+        p === 'R1 other angels'   ? 'r1'      : 'r2'
+      }`;
+      const el = document.getElementById(id);
+      if (el) el.textContent = get(p);
+    });
+    const totEl = document.getElementById(`s-${k}-total`);
+    if (totEl) totEl.textContent = total;
+  });
+}
+
+renderFinal();
+</script>
+</body>
+</html>
