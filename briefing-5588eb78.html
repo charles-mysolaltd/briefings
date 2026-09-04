@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>James Dyson product &amp; logistics briefing - Sola</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1C2B29;
+  --sun:#FFD100; --sun-dark:#D98A0F; --sun-light:#FFF2DB;
+  --teal:#1A6B59; --teal-mid:#2E8C73; --teal-light:#E0F2ED;
+  --sky:#B7ECF5; --sky-tint: rgba(183,236,245,0.35);
+  --slate:#1C2B29; --slate-mid:#3D4F4E; --muted:#7A8F8C;
+  --paper:#F7F5F2; --off-white:#FFFFFF; --white:#FFFFFF;
+  --border: rgba(28,43,42,0.10);
+  --red:#C0392B; --red-l:#FBEAE7;
+  --r:14px;
+  --shadow: 0 1px 2px rgba(28,43,42,0.05), 0 10px 26px -14px rgba(28,43,42,0.16);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --sun:#FFD100; --sun-dark:#F5C451; --sun-light:#3A2E0A;
+    --teal:#4FB89E; --teal-mid:#6FCDB4; --teal-light:#12332B;
+    --sky:#B7ECF5; --sky-tint: rgba(183,236,245,0.18);
+    --slate:#ECF3F1; --slate-mid:#B9CAC7; --muted:#8FA6A2;
+    --paper:#101B19; --off-white:#172522; --white:#1C2B29;
+    --border: rgba(236,243,241,0.12);
+    --red:#E8917F; --red-l:#3A1E19;
+    --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 10px 26px -14px rgba(0,0,0,0.55);
+  }
+}
+:root[data-theme="dark"]{
+  --sun:#FFD100; --sun-dark:#F5C451; --sun-light:#3A2E0A;
+  --teal:#4FB89E; --teal-mid:#6FCDB4; --teal-light:#12332B;
+  --sky:#B7ECF5; --sky-tint: rgba(183,236,245,0.18);
+  --slate:#ECF3F1; --slate-mid:#B9CAC7; --muted:#8FA6A2;
+  --paper:#101B19; --off-white:#172522; --white:#1C2B29;
+  --border: rgba(236,243,241,0.12);
+  --red:#E8917F; --red-l:#3A1E19;
+  --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 10px 26px -14px rgba(0,0,0,0.55);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--slate);font-family:'DM Sans',system-ui,sans-serif;font-size:14.5px;line-height:1.65}
+::selection{background:var(--teal);color:var(--white)}
+.wrap{max-width:960px;margin:0 auto;padding:0 28px 100px}
+a{color:var(--teal)}
+
+.header{background:var(--ink);padding:36px 28px}
+.header-inner{max-width:960px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.header-inner svg{display:block;color:#FFFFFF}
+.kicker{font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.5);margin-top:10px}
+.h-right{text-align:right;font-family:'DM Mono',monospace;font-size:12px;color:rgba(255,255,255,0.55);line-height:1.7}
+.h-right strong{color:var(--sun);display:block;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;margin-bottom:2px}
+
+.title-block{padding:40px 0 8px}
+h1{font-family:'DM Sans',sans-serif;font-weight:500;letter-spacing:-0.035em;font-size:34px;text-wrap:balance;margin:0 0 10px;line-height:1.08}
+.accent{font-family:'DM Serif Display',serif;font-style:italic;font-weight:400;letter-spacing:0}
+.lede{color:var(--muted);font-size:15px;max-width:64ch}
+
+.sect-label{font-family:'DM Mono',monospace;font-size:11px;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal);margin:0 0 8px}
+.sect-title{font-family:'DM Sans',sans-serif;font-weight:500;letter-spacing:-0.03em;font-size:22px;margin:0 0 16px;line-height:1.15;text-wrap:balance}
+section{margin-top:56px}
+p.prose{color:var(--muted);font-size:13.5px;line-height:1.75;margin:0 0 14px;max-width:70ch}
+p.prose:last-child{margin-bottom:0}
+p.prose a{color:var(--teal);text-decoration:underline;text-decoration-color:var(--border)}
+
+.callout{border-radius:var(--r);padding:18px 20px;font-size:13.5px;line-height:1.7;margin-bottom:20px;border:1px solid var(--border)}
+.callout.teal{background:var(--teal-light)}
+.callout.sun{background:var(--sun-light)}
+.callout strong{font-weight:600}
+
+.tbl-card{background:var(--off-white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);margin-bottom:18px}
+.tbl-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:520px}
+th{text-align:left;padding:10px 14px;font-family:'DM Mono',monospace;font-size:10.5px;font-weight:400;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);border-bottom:1px solid var(--border);background:var(--paper);white-space:nowrap}
+td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td.num, th.num{font-family:'DM Mono',monospace;font-variant-numeric:tabular-nums;text-align:right}
+.bold{font-weight:600}
+.mono{font-family:'DM Mono',monospace;font-variant-numeric:tabular-nums}
+.pos{color:var(--teal);font-weight:500}
+.row-highlight td{background:var(--teal-light)}
+.tbl-caption{font-size:11.5px;color:var(--muted);padding:10px 14px;border-top:1px solid var(--border);background:var(--paper)}
+.pending-cell{color:var(--muted);font-style:italic}
+
+.tag{display:inline-block;font-family:'DM Mono',monospace;font-size:9.5px;padding:3px 9px;border-radius:10px;font-weight:400;letter-spacing:0.04em;text-transform:uppercase}
+.tag-open{background:var(--sun-light);color:var(--sun-dark)}
+.tag-pending{background:var(--off-white);color:var(--muted);border:1px dashed var(--muted)}
+.tag-done{background:var(--teal-light);color:var(--teal)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+.risk-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.risk-list li{background:var(--off-white);border:1px solid var(--border);border-radius:var(--r);padding:13px 16px;font-size:13px;line-height:1.6;display:flex;gap:12px}
+.risk-list .n{font-family:'DM Mono',monospace;color:var(--muted);flex-shrink:0;font-size:12px;padding-top:1px}
+
+.divider{border:none;border-top:1px solid var(--border);margin:0}
+.src{font-size:12px;color:var(--muted);line-height:1.9}
+.src b{color:var(--slate);font-weight:500}
+
+.wf-card{background:var(--off-white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);padding:22px 22px 20px;margin-bottom:18px}
+.wf-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;flex-wrap:wrap;gap:8px}
+.wf-title{font-weight:600;font-size:15px}
+.wf-retail{font-family:'DM Mono',monospace;font-size:13px;color:var(--muted)}
+.wf-retail b{color:var(--slate);font-family:'DM Sans',sans-serif;font-weight:600}
+.wf-bar{position:relative;height:38px;border-radius:8px;overflow:visible;display:flex;margin:22px 0 10px;background:var(--border)}
+.wf-seg{height:100%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden}
+.wf-seg:not(:last-child){margin-right:2px}
+.wf-seg.exw{background:var(--teal)}
+.wf-seg.freight{background:var(--sun);color:var(--slate)}
+.wf-seg.domestic{background:var(--teal-mid);color:var(--slate)}
+.wf-margin{height:100%;flex:1;border-radius:0 8px 8px 0;background:repeating-linear-gradient(135deg, transparent, transparent 5px, var(--border) 5px, var(--border) 7px);border:1px dashed var(--muted);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted);font-weight:500}
+.wf-legend{display:flex;flex-wrap:wrap;gap:14px;font-size:11.5px;color:var(--muted);margin-top:14px}
+.wf-legend span{display:inline-flex;align-items:center;gap:6px}
+.wf-swatch{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.wf-note{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6;padding-top:12px;border-top:1px solid var(--border)}
+
+.sku-card{background:var(--off-white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;gap:12px}
+.sku-name{font-weight:600;font-size:14px}
+.sku-part{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)}
+.sku-svg-wrap{background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:14px}
+.sku-specs{display:flex;flex-wrap:wrap;gap:8px;font-size:11px}
+.sku-specs span{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:3px 10px;font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:0.01em;color:var(--slate-mid)}
+.sku-link{font-size:12px;color:var(--muted)}
+
+@media(max-width:680px){.grid2{grid-template-columns:1fr}.header-inner{flex-direction:column;align-items:flex-start}.h-right{text-align:left}.wf-bar{flex-wrap:wrap;height:auto}.wf-seg,.wf-margin{min-height:34px}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div>
+      <svg class="brand-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1544.9 314.7" width="196" height="40" fill="currentColor" role="img" aria-label="Sola"><path d="M176.8,182.6c-2.7,1.7-5.6,3.1-8.6,3.9-3,.9-6.2,1.4-9.4,1.4h0c-3.2,0-6.4-.5-9.4-1.4h0c-3-.9-5.9-2.2-8.6-3.9h0c-2.7-1.7-5.1-3.8-7.2-6.2-2.1-2.4-3.8-5.1-5.1-8h0c-1.3-2.9-2.2-6-2.7-9.1h0c-.5-3.1-.5-6.3,0-9.5h0c.5-3.2,1.4-6.3,2.7-9.1h0c1.3-2.9,3-5.6,5.1-8h0c2.1-2.4,4.5-4.5,7.2-6.2h0c2.7-1.7,5.6-3,8.6-3.9h0c3.1-.9,6.2-1.4,9.4-1.4s6.3.5,9.4,1.4h0c3.1.9,6,2.2,8.6,4,2.7,1.7,5.1,3.8,7.2,6.2h0c2.1,2.4,3.8,5.1,5.1,8h0c1.3,2.9,2.2,5.9,2.7,9.1.5,3.2.5,6.4,0,9.5s-1.3,6.2-2.7,9.1h0c-1.3,2.9-3.1,5.6-5.1,8-2.1,2.4-4.5,4.5-7.2,6.2h0ZM298.5,118.1l-71.8,13.5c-8.1,1.5-12.8-8.9-6.3-14l57.2-44.9c7.2-5.7,8.3-16.2,2.2-23.2h0c-6-6.9-16.6-7.4-23.2-1.2l-52.9,50.1c-6,5.7-15.6-.5-12.9-8.3l23.8-68.7c3-8.7-1.9-18.1-10.7-20.7-8.8-2.6-18,2.7-20.2,11.6l-17.3,70.7c-2,8-13.4,8-15.3,0l-17.3-70.7c-2.2-8.9-11.4-14.2-20.2-11.6-8.8,2.6-13.7,12-10.7,20.7l23.8,68.7c2.7,7.8-6.9,14-12.9,8.3l-52.9-50.1c-6.7-6.3-17.2-5.8-23.2,1.2s-5,17.5,2.2,23.2l57.3,44.9c6.5,5.1,1.8,15.5-6.3,14l-71.8-13.5c-9-1.7-17.6,4.5-18.9,13.5h0c-1.3,9.1,5.3,17.5,14.4,18.3l72.6,6.8c8.2.8,9.9,12.1,2.2,15.2l-67.8,27.5c-8.5,3.4-12.4,13.3-8.6,21.6h0c3.8,8.4,13.9,11.8,22,7.6l64.9-33.6c7.3-3.8,14.8,4.8,10.1,11.6l-42.3,59.9c-5.3,7.5-3.3,17.9,4.4,22.8h0c7.7,5,18,2.5,22.6-5.5l36.6-63.4c4.1-7.2,15.1-3.9,14.7,4.3l-3.4,73.2c-.4,9.2,6.9,16.8,16.1,16.8h0c9.2,0,16.5-7.7,16.1-16.8l-3.4-73.2c-.4-8.3,10.6-11.5,14.7-4.3l36.6,63.4c4.6,8,14.9,10.5,22.6,5.5h0c7.7-5,9.7-15.3,4.4-22.8l-42.3-59.9c-4.8-6.7,2.7-15.4,10.1-11.6l64.9,33.6c8.2,4.2,18.2.8,22-7.6h0c3.8-8.3,0-18.2-8.6-21.6l-67.8-27.5c-7.7-3.1-6-14.4,2.2-15.2l72.6-6.8c9.2-.9,15.7-9.2,14.4-18.3h0c-1.3-9.1-9.9-15.2-18.9-13.5"></path><path d="M620,206c0,19.4-4.9,36.3-14.7,50.7-9.8,14.4-23.7,25.6-41.5,33.6s-39,12-63.7,12-46.3-4-65.6-12c-19.4-8-34.1-19.7-44-35-10-15.3-15.3-31.4-16.1-48.2h75.9c.5,10.7,5,18.2,13.6,22.2,8.5,4.1,20.1,6.1,34.8,6.1s19.3-.7,25.5-2.2c6.3-1.4,11.2-3.7,14.7-6.9,3.5-3.1,5.3-7.5,5.3-13s-2.7-10.6-8.1-13.8c-5.4-3.1-12.3-5.5-20.6-7.1l-53.9-9.8c-14.7-2.6-26.7-6.2-36.2-10.6-9.4-4.5-17.5-10-24.2-16.7s-11.8-14.5-15.3-23.6c-3.5-9-5.3-19.2-5.3-30.5,0-17.5,4.7-33.1,14.2-46.6,9.4-13.5,22.9-24,40.5-31.4,17.6-7.5,37-11.1,58.2-10.8,30.4.3,53.7,4.4,70,12.4,16.2,8,28.6,19.4,37.1,34.2s13.4,30.7,14.7,47.8h-76.7c-.5-7.1-2.3-12.8-5.3-17.1-3-4.3-7.7-7.5-14.2-9.4-6.4-2-14.9-2.9-25.4-2.9s-17.2.6-22.4,1.8c-5.2,1.2-9.6,3.3-13.2,6.5-3.5,3.1-5.3,7.3-5.3,12.6s1.2,7.8,3.7,10.8,5.9,5.2,10.2,6.7c4.3,1.4,10,2.8,17.1,4.1l57.4,10.6c25.2,4.7,44.6,13.4,58.2,25.9,13.6,12.6,20.4,29.1,20.4,49.5"></path><polygon points="1177.7 298.4 984.7 298.4 984.7 16.1 1060.1 16.1 1060.1 227.6 1177.7 227.6 1177.7 298.4"></polygon><path d="M1415.7,298.4h87.3l-103.4-282.2h-81.4l-104.6,282.2h82.2l13.5-39.7h93.3l13.1,39.7ZM1332.2,191.5l24.6-72.3,23.8,72.3h-48.4Z"></path><path d="M1507.5,31.1v10.5h3.3c2.4,0,4.2-.4,5.6-1.2,1.3-.8,2-2.1,2-4s-.7-3.3-2-4c-1.3-.8-3.2-1.2-5.6-1.2h-3.3ZM1507.5,61.5h-6.2V26.1h11.9c3.5,0,6.2.9,8.2,2.6,2,1.8,3,4.3,3,7.6s-.9,5.2-2.6,7-3.9,2.9-6.4,3.2l10.5,15h-6.7l-10.2-14.8h-1.4v14.8h-.1ZM1512.2,69.4c3.7,0,7-.6,10.1-1.9s5.8-3.1,8.1-5.6c2.3-2.5,4.1-5.2,5.4-8.2s1.9-6.3,1.9-9.8-.6-6.7-1.9-9.8c-1.3-3-3.1-5.7-5.4-8.1s-5-4.2-8.1-5.6c-3.1-1.3-6.5-2-10.1-2s-7.1.7-10.2,2c-3.2,1.3-5.9,3.2-8.2,5.6-2.3,2.4-4,5.1-5.2,8.1s-1.8,6.3-1.8,9.8.6,6.7,1.8,9.8c1.2,3,2.9,5.8,5.2,8.2,2.3,2.5,5,4.3,8.2,5.6,3.2,1.3,6.6,1.9,10.2,1.9M1512.2,75.8c-4.8,0-9.1-.8-13-2.4s-7.3-3.8-10.4-6.8c-3-2.9-5.3-6.4-6.9-10.2-1.6-3.9-2.4-8.1-2.4-12.5s.8-8.4,2.4-12.3c1.6-3.9,3.9-7.3,6.9-10.2,3-2.9,6.5-5.2,10.4-6.9,3.9-1.7,8.2-2.5,13-2.5s8.9.8,12.9,2.5c4,1.7,7.4,4,10.4,6.9,2.9,2.9,5.2,6.4,6.9,10.2,1.7,3.9,2.5,8.1,2.5,12.5s-.8,8.4-2.5,12.3c-1.7,3.9-4,7.3-6.9,10.2s-6.4,5.2-10.4,6.8c-4,1.6-8.3,2.4-12.9,2.4"></path><path d="M796.9,233.3c11,0,20.8-2,29.5-5.9,8.6-3.9,15.9-9.4,21.8-16.5,5.9-7.1,10.4-15.2,13.4-24.4s4.5-19,4.5-29.5-1.5-20.2-4.5-29.3c-3-9-7.5-17-13.4-24-5.9-6.9-13.2-12.4-21.8-16.3s-18.5-5.9-29.5-5.9-20.8,2-29.5,5.9c-8.6,3.9-15.9,9.4-21.8,16.3-5.9,6.9-10.4,14.9-13.4,24-3,9-4.5,18.8-4.5,29.3s1.5,20.3,4.5,29.5,7.5,17.3,13.4,24.4c5.9,7.1,13.2,12.6,21.8,16.5s18.5,5.9,29.5,5.9M796.9,304.5c-20.4,0-39.5-3.6-57-10.8-17.6-7.2-33-17.4-46.2-30.7-13.2-13.2-23.6-28.8-31.1-46.8s-11.2-37.7-11.2-59.2,3.7-41.1,11.2-59c7.5-17.8,17.8-33.3,31.1-46.4,13.2-13.1,28.6-23.3,46.2-30.5,17.6-7.2,36.6-10.8,57-10.8s39.5,3.6,57.2,10.8,33.2,17.4,46.4,30.5,23.6,28.6,31.1,46.4,11.2,37.5,11.2,59-3.7,41.2-11.2,59.2-17.8,33.6-31.1,46.8c-13.2,13.2-28.7,23.5-46.4,30.7s-36.8,10.8-57.2,10.8"></path></svg>
+      <div class="kicker">Unit economics briefing</div>
+    </div>
+    <div class="h-right">
+      <strong>For James Dyson, Co-Founder</strong>
+      Prepared by Charles &middot; 2 September 2026
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<div class="title-block">
+  <h1>Sola logistics overview to date.</h1>
+  <p class="lede">Factory pricing, freight, retail positioning and the open items on freight and warehousing worth James knowing about early.</p>
+</div>
+
+<section>
+  <div class="sect-label">01 &middot; Retail pricing</div>
+  <h2 class="sect-title">Target retail pricing in line with the market.</h2>
+
+  <div class="tbl-card">
+    <div class="tbl-scroll">
+    <table>
+      <tr><th>Kit</th><th>What it is</th><th class="num">Retail price</th></tr>
+      <tr><td class="bold">Sola 200</td><td>One 200W flexible panel, MS300 microinverter</td><td class="num mono">&pound;199</td></tr>
+      <tr class="row-highlight"><td class="bold">Sola 400</td><td>Two 200W flexible panels, MS400 microinverter</td><td class="num mono">&pound;349</td></tr>
+      <tr><td class="bold">Sola 800</td><td>Two 450W rigid TOPCon glass panels, MS800 microinverter</td><td class="num mono">&pound;499</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <p class="prose">There is no clean like-for-like to check this against, because no mainstream UK retailer currently stocks a genuine grid-tied plug-in kit. Currys' entire "portable solar panel" range (Anker, Jackery, EcoFlow) is for charging power stations off-grid, camping and blackout kit rather than a wall-socket system. Those run &pound;58.99 to &pound;2,299, with most between &pound;179 and &pound;999, which at least tells us what UK shoppers already pay a high-street retailer for solar and battery gear in this general bracket. Sola's &pound;199 to &pound;499 sits comfortably inside that range.</p>
+
+  <p class="prose">The closer comparison is EcoFlow's STREAM balcony system, the one true plug-in category on the market. It is not stocked at Currys either, it is EcoFlow-direct only and was priced &pound;449 to &pound;749 on member pricing when we last checked on 3 June (worth re-checking, as it may have moved). Sola comes in below that across the board and does so without EcoFlow's membership-tier mechanic, where a first-time buyer sees the higher non-member price by default.</p>
+
+  <div class="callout teal">
+    <strong>The more important gap is at the small end, not the price.</strong> Neither Currys nor EcoFlow sell anything with a flexible panel or a wattage as low as 200W. EcoFlow's smallest STREAM configuration starts at 2&times;400W rigid panels and Currys carries nothing grid-tied at all. A renter with a balcony cannot currently buy a light, single flexible panel from anyone visible in this market, even though that is exactly the format a balcony rail wants: a rigid glass panel is heavy and awkward to hang, a flexible one is not. Sola 200 and 400 sit in that space largely on their own.</p>
+  </div>
+</section>
+
+<section>
+  <div class="sect-label">02 &middot; Cost breakdown, Sola 400</div>
+  <h2 class="sect-title">EXW, freight, delivery, retail.</h2>
+
+  <div class="wf-card">
+    <div class="wf-head"><div class="wf-title">Sola 400 (MS400 kit)</div><div class="wf-retail">Retail <b>&pound;349</b></div></div>
+    <div class="wf-bar">
+      <div class="wf-seg exw" style="width:48.7%">EXW &pound;170.00</div>
+      <div class="wf-seg freight" style="width:3.6%"></div>
+      <div class="wf-seg domestic" style="width:2.9%"></div>
+      <div class="wf-margin">Margin ceiling &pound;156.27 &middot; 44.8%</div>
+    </div>
+    <div class="wf-legend">
+      <span><i class="wf-swatch" style="background:var(--teal)"></i>EXW, factory: &pound;170.00</span>
+      <span><i class="wf-swatch" style="background:var(--sun)"></i>Freight, Freight International: &pound;12.73</span>
+      <span><i class="wf-swatch" style="background:var(--teal-mid)"></i>Domestic delivery, est.: &pound;10.00</span>
+      <span><i class="wf-swatch" style="background:var(--muted);opacity:0.5"></i>3PL and warehousing: not yet quoted</span>
+      <span><i class="wf-swatch" style="background:var(--muted);opacity:0.5"></i>Shipping insurance: not yet quoted</span>
+    </div>
+    <div class="wf-note">Known landed and delivered cost: <b>&pound;192.73</b>, on Freight International's rate, the only formally quoted figure so far. Import duty, cargo insurance, 3PL handling and warehousing still have to come out of the &pound;156.27 margin ceiling before it is real, and no freight quote gathered so far includes cargo insurance. United Global's more recent quote looks meaningfully cheaper (see section 04); expect this bar to move once a provider is confirmed.</div>
+  </div>
+</section>
+
+<section>
+  <div class="sect-label">03 &middot; Cost breakdown, Sola 800</div>
+  <h2 class="sect-title">EXW, freight, delivery, retail.</h2>
+
+  <div class="wf-card">
+    <div class="wf-head"><div class="wf-title">Sola 800 (MS800 kit)</div><div class="wf-retail">Retail <b>&pound;499</b></div></div>
+    <div class="wf-bar">
+      <div class="wf-seg exw" style="width:51.1%">EXW &pound;255.00</div>
+      <div class="wf-seg freight" style="width:5.6%"></div>
+      <div class="wf-seg domestic" style="width:7.5%"></div>
+      <div class="wf-margin">Margin ceiling &pound;178.64 &middot; 35.8%</div>
+    </div>
+    <div class="wf-legend">
+      <span><i class="wf-swatch" style="background:var(--teal)"></i>EXW, factory: &pound;255.00</span>
+      <span><i class="wf-swatch" style="background:var(--sun)"></i>Freight, Freight International: &pound;27.86</span>
+      <span><i class="wf-swatch" style="background:var(--teal-mid)"></i>Domestic delivery, est.: &pound;30 to &pound;45</span>
+      <span><i class="wf-swatch" style="background:var(--muted);opacity:0.5"></i>3PL and warehousing: not yet quoted</span>
+      <span><i class="wf-swatch" style="background:var(--muted);opacity:0.5"></i>Shipping insurance: not yet quoted</span>
+    </div>
+    <div class="wf-note">Known landed and delivered cost: <b>&pound;320.36</b>, using the &pound;37.50 midpoint of XDP's budgeted &pound;30 to &pound;45 kerbside range and Freight International's freight rate, the only formally quoted figure so far. Duty, cargo insurance, 3PL handling and warehousing still come out of the &pound;178.64 margin ceiling before it is real, and cargo insurance has not been quoted by any provider yet. United Global and Rhenus both look competitive on freight (see section 04), though neither is confirmed.</div>
+  </div>
+
+  <p class="prose">Both bars use Freight International's rate for a full 40'HC container. Fall back to LCL and the freight line alone jumps to &pound;38.52 per unit on the 400, or &pound;76.86 to &pound;114.44 per unit on the 800, which eats most of the margin ceiling shown here. Whichever freight provider we settle on, the container fill rate has a bigger effect on this margin than almost anything else in the model.</p>
+</section>
+
+<section>
+  <div class="sect-label">04 &middot; International freight</div>
+  <h2 class="sect-title">Freight International against United Global and Rhenus.</h2>
+
+  <div class="tbl-card">
+    <div class="tbl-scroll">
+    <table>
+      <tr><th>SKU</th><th>Mode</th><th class="num">Freight International</th><th class="num">United Global</th><th class="num">Rhenus</th></tr>
+      <tr><td class="bold" rowspan="2">Sola 400</td><td>FCL 40'HC (512 units)</td><td class="num mono">&pound;6,520 <span style="color:var(--muted);font-weight:400">(&pound;12.73/unit)</span></td><td class="num mono">$4,300 + &pound;512 UK <span style="color:var(--muted);font-weight:400">(&asymp;&pound;7.46/unit)</span></td><td class="num mono">$3,850&ndash;4,200 <span style="color:var(--muted);font-weight:400">ocean only</span></td></tr>
+      <tr><td>FCL 20'GP (256 units)</td><td class="num mono">&pound;4,730 <span style="color:var(--muted);font-weight:400">(&pound;18.48/unit)</span></td><td class="num pending-cell">not quoted</td><td class="num pending-cell">not quoted</td></tr>
+      <tr><td class="bold">Sola 800</td><td>FCL 40'HC (234 units)</td><td class="num mono">&pound;6,520 <span style="color:var(--muted);font-weight:400">(&pound;27.86/unit)</span></td><td class="num mono">$4,300 + &pound;512 UK <span style="color:var(--muted);font-weight:400">(&asymp;&pound;16.32/unit)</span></td><td class="num mono">$3,850&ndash;4,200 <span style="color:var(--muted);font-weight:400">container type tbc</span></td></tr>
+    </table>
+    </div>
+    <div class="tbl-caption">Freight International figures are estimates 10468 and 10469, dated 4 June 2026, EXW Suzhou to St Albans, inclusive of import customs clearance and excluding duty and tax, expired 18 June 2026. United Global's figures are FOB Shanghai to Felixstowe, quoted by Martin on 5 August 2026 and lapsed 9 August. Rhenus's are Yasmin's verbal range from 26 August 2026, ocean freight only and not yet confirmed as a 40'HQ container. None of the three include cargo insurance. Treat all of them as a starting point rather than a bookable rate.</div>
+  </div>
+
+  <p class="prose">United Global's most recent quote was USD4,300 for a 40'HQ container, FOB Shanghai to Felixstowe, plus roughly &pound;512 in UK-side charges (terminal handling, port, documentation and customs clearance), which works out to about &pound;7.46 a unit on the Sola 400 and &pound;16.32 on the Sola 800 at current container fill. That is meaningfully cheaper than Freight International's &pound;12.73 and &pound;27.86, though the comparison is not perfectly clean: Freight International's rate is EXW Suzhou, while United Global's is FOB Shanghai, which folds in an export leg that Freight International's figure does not carry.</p>
+
+  <p class="prose">Rhenus's own formal quote (reference RHE20003) came in at USD5,100 for a 40HQ, the most expensive of the three, but Yasmin's more recent verbal range of USD3,850 to 4,200 is a real improvement and undercuts United Global's ocean rate. Two things stop this being a clean number yet. It is quoted for a 40FT container rather than confirmed as a 40HQ, and the extra headroom a High Cube gives matters most on the Sola 800, where the two stacked pallets already use 260cm of a 40HQ's 269cm: in a standard-height container the double stack will not fit and capacity could fall from 234 units to roughly 117, which would roughly double the per-unit freight rather than improve it. It is also ocean freight only. Rhenus's own destination-side charges, on the earlier formal quote, added around &pound;1,426 to the container, and there is no confirmation those still apply to the new range.</p>
+
+  <p class="prose">For context on LCL rather than full containers, United Global's own small-batch quote (a mixed shipment of two Sola 400 and two Sola 800 pallets) works out to roughly &pound;23 a unit on the 400 and &pound;66 on the 800, both cheaper than Freight International's &pound;38.52 and &pound;76.86, though this is a proportional split of one combined quote rather than a price for each SKU on its own and should be treated as directional.</p>
+</section>
+
+<section>
+  <div class="sect-label">05 &middot; Product reference</div>
+  <h2 class="sect-title">The two SKUs, to scale.</h2>
+  <p class="prose">There is no product photography in the project files, only the factory quote and the packing specification. These are dimensional schematics built from that spec, not photographs, useful for a sense of scale and construction rather than marketing.</p>
+
+  <div class="grid2">
+    <div class="sku-card">
+      <div>
+        <div class="sku-name">Sola 400</div>
+        <div class="sku-part">MS400 kit, DIY, balcony inverter</div>
+      </div>
+      <div class="sku-svg-wrap">
+        <svg viewBox="0 0 320 210" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <rect x="18" y="30" width="128" height="92" rx="4" fill="var(--sky-tint)" stroke="var(--teal)" stroke-width="2"/>
+            <rect x="164" y="30" width="128" height="92" rx="4" fill="var(--sky-tint)" stroke="var(--teal)" stroke-width="2"/>
+            <g stroke="var(--teal)" stroke-width="0.75" opacity="0.5">
+              <line x1="50" y1="30" x2="50" y2="122"/><line x1="82" y1="30" x2="82" y2="122"/><line x1="114" y1="30" x2="114" y2="122"/>
+              <line x1="196" y1="30" x2="196" y2="122"/><line x1="228" y1="30" x2="228" y2="122"/><line x1="260" y1="30" x2="260" y2="122"/>
+              <line x1="18" y1="61" x2="146" y2="61"/><line x1="18" y1="92" x2="146" y2="92"/>
+              <line x1="164" y1="61" x2="292" y2="61"/><line x1="164" y1="92" x2="292" y2="92"/>
+            </g>
+            <text x="82" y="76" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" fill="var(--teal)" opacity="0.7">flexible</text>
+            <text x="228" y="76" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" fill="var(--teal)" opacity="0.7">flexible</text>
+            <line x1="82" y1="122" x2="82" y2="150" stroke="var(--muted)" stroke-width="1.5"/>
+            <line x1="228" y1="122" x2="228" y2="150" stroke="var(--muted)" stroke-width="1.5"/>
+            <line x1="82" y1="150" x2="228" y2="150" stroke="var(--muted)" stroke-width="1.5"/>
+            <rect x="132" y="150" width="46" height="24" rx="4" fill="var(--sun-light)" stroke="var(--sun-dark)" stroke-width="1.5"/>
+            <text x="155" y="166" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" fill="var(--sun-dark)">MS400</text>
+            <path d="M178 162 C 200 162, 200 190, 222 190 L 250 190" stroke="var(--slate-mid)" stroke-width="1.5" fill="none"/>
+            <rect x="248" y="182" width="18" height="16" rx="2" fill="none" stroke="var(--slate-mid)" stroke-width="1.5"/>
+            <line x1="18" y1="132" x2="146" y2="132" stroke="var(--muted)" stroke-width="0.75"/>
+            <text x="82" y="145" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8.5" fill="var(--muted)">134 x 96cm</text>
+          </g>
+        </svg>
+      </div>
+      <div class="sku-specs">
+        <span>2 x 200W flexible panel</span><span>6.5cm profile</span><span>13kg boxed</span><span>134 x 96cm per panel</span><span>2m DC cable x2</span>
+      </div>
+      <div class="sku-link">Manufacturer product page available on request.</div>
+    </div>
+
+    <div class="sku-card">
+      <div>
+        <div class="sku-name">Sola 800</div>
+        <div class="sku-part">MS800 kit, DIY, inverter</div>
+      </div>
+      <div class="sku-svg-wrap">
+        <svg viewBox="0 0 320 210" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <rect x="14" y="24" width="134" height="100" rx="3" fill="var(--sky-tint)" stroke="var(--teal)" stroke-width="3.5"/>
+            <rect x="164" y="24" width="134" height="100" rx="3" fill="var(--sky-tint)" stroke="var(--teal)" stroke-width="3.5"/>
+            <g stroke="var(--teal)" stroke-width="1" opacity="0.55">
+              <line x1="48" y1="24" x2="48" y2="124"/><line x1="81" y1="24" x2="81" y2="124"/><line x1="114" y1="24" x2="114" y2="124"/>
+              <line x1="198" y1="24" x2="198" y2="124"/><line x1="231" y1="24" x2="231" y2="124"/><line x1="264" y1="24" x2="264" y2="124"/>
+              <line x1="14" y1="57" x2="148" y2="57"/><line x1="14" y1="90" x2="148" y2="90"/>
+              <line x1="164" y1="57" x2="298" y2="57"/><line x1="164" y1="90" x2="298" y2="90"/>
+            </g>
+            <text x="81" y="76" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" fill="var(--teal)" opacity="0.75">TOPCon 450W</text>
+            <text x="231" y="76" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" fill="var(--teal)" opacity="0.75">TOPCon 450W</text>
+            <line x1="81" y1="124" x2="81" y2="152" stroke="var(--muted)" stroke-width="1.5"/>
+            <line x1="231" y1="124" x2="231" y2="152" stroke="var(--muted)" stroke-width="1.5"/>
+            <line x1="81" y1="152" x2="231" y2="152" stroke="var(--muted)" stroke-width="1.5"/>
+            <rect x="130" y="152" width="52" height="26" rx="4" fill="var(--sun-light)" stroke="var(--sun-dark)" stroke-width="1.5"/>
+            <text x="156" y="169" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" fill="var(--sun-dark)">MS800</text>
+            <path d="M182 166 C 205 166, 205 194, 228 194 L 254 194" stroke="var(--slate-mid)" stroke-width="1.5" fill="none"/>
+            <rect x="252" y="186" width="18" height="16" rx="2" fill="none" stroke="var(--slate-mid)" stroke-width="1.5"/>
+            <line x1="14" y1="134" x2="148" y2="134" stroke="var(--muted)" stroke-width="0.75"/>
+            <text x="81" y="146" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8.5" fill="var(--muted)">174.4 x 116.4cm</text>
+          </g>
+        </svg>
+      </div>
+      <div class="sku-specs">
+        <span>2 x 450W rigid TOPCon</span><span>11.9cm profile</span><span>62kg boxed</span><span>174.4 x 116.4cm per panel</span><span>0.8m DC cable x2</span>
+      </div>
+      <div class="sku-link">Manufacturer product page available on request.</div>
+    </div>
+  </div>
+  <p class="prose" style="margin-top:14px">The manufacturer's listing covers both configurations together and describes the general range rather than the specific rigid TOPCon configuration quoted to us, so treat published specs as indicative, not a substitute for our own quote.</p>
+</section>
+
+<section>
+  <div class="sect-label">06 &middot; Sola 200</div>
+  <h2 class="sect-title">Why there is no landed cost for this one yet.</h2>
+  <p class="prose">The factory told us the MS300 microinverter will not start up on a single 200W panel input, which is why there is no Sola 200 configuration on the current quote (QO-GL-2026051901V01) or a landed cost to put next to the &pound;199 retail price above. The nearest thing on the quote, the MS400 configuration, is already a two-panel kit at &pound;170 EXW.</p>
+  <p class="prose">We are not convinced this is a hard technical limit rather than a conservative default the factory would rather not test for us. It is worth requesting a sample MS300 and a single panel and trying it ourselves before accepting the constraint as final, since a confirmed single-panel bill of materials is the only thing standing between the &pound;199 price and a real cost breakdown for it.</p>
+</section>
+
+<section>
+  <div class="sect-label">07 &middot; MS400, angled configuration</div>
+  <h2 class="sect-title">Withdrawn and worth revisiting.</h2>
+  <p class="prose">The factory discontinued the angled configuration because the lightweight flexible 200W panel behaves like a sail in high wind when mounted at an angle, which they treat as a safety risk on a balcony rail. We are keen to get this model back on the table regardless: an angled mount generates noticeably more than the flush vertical version at UK latitudes, the same effect our own solar angle calculator models for London. Vertical capture drops off fastest exactly when the sun sits low, which is most of the year here.</p>
+  <p class="prose">One thing worth flagging to Rena directly: the factory's own public product page for the angled configuration still lists it as an active, adjustable-angle product with no discontinuation notice. It may only be withdrawn for our order or region rather than globally, which would make it worth another conversation about a compliant angled bracket instead of accepting the vertical-only line as final.</p>
+</section>
+
+<section>
+  <div class="sect-label">08 &middot; Factory Open API</div>
+  <h2 class="sect-title">The paid route to our own app.</h2>
+  <p class="prose">The factory offers an Open API on a paid licence, previously quoted at &pound;2,220 one-off, that would let a Sola app pull live generation data directly rather than sending customers to the factory's own monitoring platform under our branding. It is a prerequisite for the Sola app MVP and currently sits after launch on the roadmap, but it belongs in the same supplier conversation as everything else in this document, since it is another cost sitting on the factory relationship rather than a separate line item.</p>
+</section>
+
+<section>
+  <div class="sect-label">09 &middot; 3PL and logistics</div>
+  <h2 class="sect-title">Where we stand on partners.</h2>
+  <p class="prose">One 3PL relationship is the preferred structure: a single warehouse and fulfilment partner rather than splitting freight, storage and last-mile across separate providers. Rhenus has been the leading candidate but has been slow to move and still has not returned a warehousing rate card, so United Global's own Wrexham facility is now being looked at as a genuine alternative rather than purely a freight option.</p>
+
+  <div class="tbl-card">
+    <div class="tbl-scroll">
+    <table>
+      <tr><th>Partner</th><th>Role</th><th>Status</th></tr>
+      <tr>
+        <td class="bold">Freight International</td>
+        <td>Freight forwarder, Bristol-based, BIFA-registered, a personal contact. Source of the container and LCL quotes above.</td>
+        <td><span class="tag tag-open">Quotes lapsed 18 Jun</span></td>
+      </tr>
+      <tr>
+        <td class="bold">United Global</td>
+        <td>Freight forwarder (contact: Martin), cheaper than Freight International on this lane. Has also proposed their own Wrexham warehouse, 400,000 sq ft, storage quoted at &pound;3.50 per pallet per week, as a combined freight and fulfilment option rather than freight alone.</td>
+        <td><span class="tag tag-pending">3PL fit under evaluation</span></td>
+      </tr>
+      <tr>
+        <td class="bold">Rhenus</td>
+        <td>Freight and warehousing (contact: Yasmin Haq). Their own bonded warehouse does not fit; a non-bonded third-party site near Heathrow is the fallback, still being checked. A verbal freight range is in (see section 04) but warehousing pricing has not arrived, and progress has been slower than we would like.</td>
+        <td><span class="tag tag-pending">Warehousing pricing pending</span></td>
+      </tr>
+      <tr>
+        <td class="bold">XDP Express</td>
+        <td>Domestic courier for Sola 800, 1+ service, up to 75kg, kerbside. Optional 2-Man upgrade &pound;15 to &pound;20.</td>
+        <td><span class="tag tag-done">Selected for last-mile</span></td>
+      </tr>
+      <tr>
+        <td class="bold">DHL Express</td>
+        <td>Sample imports and small domestic parcels. Not viable as primary Sola 800 carrier: its 120 x 70 x 70cm limit does not fit a 172cm panel.</td>
+        <td>Account open, samples only</td>
+      </tr>
+    </table>
+    </div>
+  </div>
+
+  <ul class="risk-list">
+    <li><span class="n">01</span>Confirm the MS800 pallet stacking rating with the factory, in writing. Double-stacking is the binding constraint on container fill for both SKUs, and the Sola 800 pallet already uses 260cm of a 40HQ's 269cm: if the factory will not confirm the boxes can carry a full pallet on top, capacity falls from 234 units to roughly 117, which would roughly double the per-unit freight on our highest-margin product.</li>
+    <li><span class="n">02</span>Get a warehousing and pick-pack rate card from Rhenus, or move ahead with United Global's Wrexham facility if Rhenus does not progress. This is the single biggest gap in the cost breakdowns above and the one we are furthest behind on.</li>
+    <li><span class="n">03</span>Get a marine and cargo insurance quote for the freight leg. None of Freight International, United Global or Rhenus have quoted this, and it still needs to be finalised before the cost breakdowns in sections 02 and 03 are complete.</li>
+  </ul>
+</section>
+
+<section>
+  <div class="sect-label">10 &middot; Next steps</div>
+  <h2 class="sect-title">What moves this from a model to a plan.</h2>
+  <ul class="risk-list">
+    <li><span class="n">01</span>Look at whether a cheaper alternative to the current factory exists for the solar hardware itself, not just cheaper freight around the same supplier.</li>
+    <li><span class="n">02</span>Decide whether kits stay fully packed in China with the factory, or whether we import components and assemble and pack in the UK instead. Either could move the numbers in this document meaningfully.</li>
+    <li><span class="n">03</span>Finalise the 3PL and freight provider so the unit economics in sections 02 and 03 stop being a model and become a set number.</li>
+  </ul>
+</section>
+
+<hr class="divider" style="margin-top:54px">
+
+<div style="padding-top:22px" class="src">
+  <b>Sources referenced in this briefing:</b> Factory quotation QO-GL-2026051901V01 (19 May 2026) &middot; Freight International estimates 10468 and 10469 (4 June 2026) &middot; United Global freight correspondence, Martin (5 August 2026) &middot; Rhenus freight and warehousing correspondence, Yasmin Haq (26 August 2026) &middot; the factory packing specification (internal file) &middot; Sola project memory, logistics section &middot; Sola competitor intelligence log &middot; Currys.co.uk and uk.ecoflow.com, checked 2 September 2026.
+</div>
+
+</div>
+</body>
+</html>
